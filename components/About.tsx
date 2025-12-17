@@ -1,70 +1,84 @@
-import { FaCode, FaChartBar, FaNetworkWired, FaLightbulb } from 'react-icons/fa'
-
 export default function About() {
-  const features = [
-    {
-      icon: <FaCode className="text-4xl text-primary-400" />,
-      title: 'Data Analysis',
-      description:
-        'Expert in analyzing on-chain metrics, transaction patterns, and smart contract interactions',
-    },
-    {
-      icon: <FaChartBar className="text-4xl text-primary-400" />,
-      title: 'Visualization',
-      description:
-        'Creating compelling dashboards and visualizations to communicate complex blockchain data',
-    },
-    {
-      icon: <FaLightbulb className="text-4xl text-primary-400" />,
-      title: 'Insights',
-      description:
-        'Transforming raw blockchain data into actionable insights for decision-making',
-    },
-    {
-      icon: <FaNetworkWired className="text-4xl text-primary-400" />,
-      title: 'Multi-Chain',
-      description:
-        'Experience across Ethereum, Bitcoin, and other major blockchain networks',
-    },
+  const stats = [
+    { label: 'Data Points Analyzed', value: '1TB+', icon: '📊' },
+    { label: 'Dashboards Built', value: '50+', icon: '📈' },
+    { label: 'Protocols Tracked', value: '100+', icon: '🔗' },
+    { label: 'On-Chain Queries', value: '10K+', icon: '💾' },
   ]
 
   return (
     <div className="w-full">
       <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            About Me
-          </h2>
-          <div className="w-24 h-1 bg-primary-500 mx-auto mb-6"></div>
-          <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-            I specialize in extracting meaningful insights from blockchain data,
-            helping organizations understand on-chain behavior, tokenomics, and
-            network dynamics.
-          </p>
-        </div>
+        <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 font-mono">
+          <span className="text-neon-blue">MY DATA</span>{' '}
+          <span className="text-white">PHILOSOPHY</span>
+        </h2>
+        <div className="w-24 h-1 bg-neon-blue mx-auto mb-6"></div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="bg-matrix-card p-6 rounded-lg hover:bg-primary-500/5 transition-all transform hover:scale-105 border border-primary-500/20 hover:border-primary-500/40"
-            >
-              <div className="mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold text-white mb-2">
-                {feature.title}
-              </h3>
-              <p className="text-gray-200">{feature.description}</p>
+      {/* Data Philosophy */}
+      <div className="mb-16 bg-dark-card p-8 md:p-12 rounded-lg border border-neon-blue/20">
+        <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-6 font-sans">
+        The obvious data is already <span className="text-red-500 font-semibold">priced in</span>.
+        </p>
+        <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-6 font-sans">
+        I look closer at the <span className="text-cyan-400 font-medium">transaction gaps</span>, the <span className="text-cyan-400 font-medium">flow anomalies</span>, and the <span className="text-cyan-400 font-medium">hidden correlations</span> where <span className="text-yellow-400 font-bold drop-shadow-[0_0_10px_rgba(250,204,21,0.6)]">real alpha</span> lives.
+        </p>
+        <p className="text-lg md:text-xl text-gray-300 leading-relaxed font-sans">
+        Combining rigorous data science with deep crypto-native understanding, I transform blockchain noise into <span className="text-emerald-400 font-bold tracking-wide">high-signal intelligence</span>. Every insight I deliver is designed to <span className="text-yellow-400 font-semibold border-b border-yellow-400/30 pb-0.5">unlock value</span>.
+        </p>
+      </div>
+
+      {/* Key Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+        {stats.map((stat, index) => (
+          <div
+            key={index}
+            className="bg-dark-card p-6 rounded-lg border border-neon-blue/20 hover:border-neon-blue/40 transition-all transform hover:scale-105 text-center"
+          >
+            <div className="text-4xl mb-3">{stat.icon}</div>
+            <div className="text-3xl md:text-4xl font-bold text-neon-blue mb-2 font-mono">
+              {stat.value}
             </div>
-          ))}
-        </div>
+            <div className="text-sm text-gray-400 font-sans uppercase tracking-wide">
+              {stat.label}
+            </div>
+          </div>
+        ))}
+      </div>
 
-        <div className="mt-16 bg-gradient-to-r from-primary-500/10 to-primary-600/10 p-8 rounded-lg border border-primary-500/30">
-          <p className="text-lg text-gray-100 text-center">
-            With a deep understanding of blockchain technology and data science,
-            I bridge the gap between complex on-chain data and business
-            intelligence, enabling data-driven decisions in the Web3 space.
-          </p>
+      {/* Tech Stack Overview */}
+      <div className="bg-dark-card p-8 rounded-lg border border-neon-green/20">
+        <h3 className="text-2xl font-bold text-white mb-6 font-mono">
+          <span className="text-neon-green">THE STACK</span>
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <h4 className="text-neon-blue font-mono mb-3 text-sm uppercase tracking-wide">
+              The Extractor
+            </h4>
+            <p className="text-gray-300 font-sans">
+              The Graph, SQL, Dune Analytics, Flipside, Blockscout APIs
+            </p>
+          </div>
+          <div>
+            <h4 className="text-neon-cyan font-mono mb-3 text-sm uppercase tracking-wide">
+              The Processor
+            </h4>
+            <p className="text-gray-300 font-sans">
+              Python, Node.js, TypeScript, Web3 Libraries
+            </p>
+          </div>
+          <div>
+            <h4 className="text-neon-green font-mono mb-3 text-sm uppercase tracking-wide">
+              The Visualizer
+            </h4>
+            <p className="text-gray-300 font-sans">
+              React, Tableau, Dune Dashboards, Real-time Charts, Looker Studio
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
-

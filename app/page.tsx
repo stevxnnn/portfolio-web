@@ -1,3 +1,5 @@
+'use client'
+
 import Hero from '@/components/Hero'
 import About from '@/components/About'
 import Projects from '@/components/Projects'
@@ -5,6 +7,7 @@ import Skills from '@/components/Skills'
 import Contact from '@/components/Contact'
 import Navigation from '@/components/Navigation'
 import FlashCard from '@/components/FlashCard'
+import Footer from '@/components/Footer'
 
 export default function Home() {
   const totalCards = 4
@@ -25,6 +28,7 @@ export default function Home() {
       <FlashCard id="contact" cardNumber={4} totalCards={totalCards}>
         <Contact />
       </FlashCard>
+      <Footer />
     </main>
   )
 }

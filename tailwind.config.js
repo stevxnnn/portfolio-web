@@ -8,27 +8,33 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-space-grotesk)', 'sans-serif'],
+        sans: ['var(--font-inter)', 'sans-serif'],
+        mono: ['var(--font-jetbrains-mono)', 'monospace'],
         inter: ['var(--font-inter)', 'sans-serif'],
       },
       colors: {
         primary: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
+          50: '#e0f2fe',
+          100: '#bae6fd',
+          200: '#7dd3fc',
+          300: '#38bdf8',
+          400: '#0ea5e9',
+          500: '#0284c7',
+          600: '#0369a1',
+          700: '#075985',
+          800: '#0c4a6e',
+          900: '#082f49',
         },
-        matrix: {
+        neon: {
+          blue: '#00f0ff',
           green: '#00ff41',
-          dark: '#0a0a0a',
-          darker: '#000000',
-          card: '#0d0d0d',
+          purple: '#9945ff',
+          cyan: '#00d9ff',
+        },
+        dark: {
+          bg: '#0a0a0f',
+          card: '#0f0f1a',
+          border: '#1a1a2e',
         },
       },
     },

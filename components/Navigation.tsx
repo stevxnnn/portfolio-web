@@ -45,7 +45,7 @@ export default function Navigation() {
       {/* Menu Button - Top Right */}
       <button
         onClick={() => setIsSideMenuOpen(!isSideMenuOpen)}
-        className="fixed top-6 right-6 z-50 menu-button p-3 bg-matrix-card border border-primary-500/40 rounded-lg text-primary-400 hover:text-primary-300 hover:border-primary-500/60 transition-all duration-300 shadow-lg hover:shadow-xl"
+        className="fixed top-6 right-6 z-50 menu-button p-3 bg-dark-card border border-neon-blue/40 rounded-lg text-neon-blue hover:text-neon-cyan hover:border-neon-blue/60 transition-all duration-300 shadow-lg hover:shadow-xl shadow-neon-blue/20"
         aria-label="Toggle menu"
       >
         {isSideMenuOpen ? (
@@ -65,7 +65,7 @@ export default function Navigation() {
 
       {/* Side Menu */}
       <nav
-        className={`side-menu fixed top-0 right-0 h-full w-80 bg-matrix-card border-l-2 border-primary-500/40 z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`side-menu fixed top-0 right-0 h-full w-80 bg-dark-card border-l-2 border-neon-blue/40 z-50 transform transition-transform duration-300 ease-in-out ${
           isSideMenuOpen ? 'translate-x-0' : 'translate-x-full'
         } shadow-2xl`}
       >
@@ -74,7 +74,7 @@ export default function Navigation() {
           <div className="flex justify-end mb-8">
             <button
               onClick={() => setIsSideMenuOpen(false)}
-              className="text-primary-400 hover:text-primary-300 transition-colors"
+              className="text-neon-blue hover:text-neon-cyan transition-colors"
               aria-label="Close menu"
             >
               <FaTimes size={24} />
@@ -88,7 +88,7 @@ export default function Navigation() {
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsSideMenuOpen(false)}
-                className="text-2xl font-semibold text-gray-200 hover:text-primary-400 transition-all duration-300 transform hover:translate-x-2 hover:scale-105 border-b border-primary-500/20 pb-4"
+                className="text-2xl font-semibold text-gray-200 hover:text-neon-blue transition-all duration-300 transform hover:translate-x-2 hover:scale-105 border-b border-neon-blue/20 pb-4 font-mono"
                 style={{
                   animationDelay: `${index * 100}ms`,
                 }}
@@ -96,13 +96,6 @@ export default function Navigation() {
                 {link.name}
               </a>
             ))}
-          </div>
-
-          {/* Decorative element */}
-          <div className="mt-auto pt-8 border-t border-primary-500/20">
-            <p className="text-sm text-primary-500/60 text-center font-inter">
-              On-Chain Data Analyst
-            </p>
           </div>
         </div>
       </nav>

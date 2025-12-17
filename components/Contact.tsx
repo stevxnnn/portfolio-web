@@ -136,20 +136,22 @@ export default function Contact() {
   return (
     <div className="w-full">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Get In Touch
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 font-mono">
+            <span className="text-neon-blue">GET IN</span>{' '}
+            <span className="text-white">TOUCH</span>
           </h2>
-          <div className="w-24 h-1 bg-primary-500 mx-auto mb-6"></div>
-          <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-            Have a project in mind or want to collaborate? Let's connect!
+          <div className="w-24 h-1 bg-neon-blue mx-auto mb-6"></div>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto font-sans">
+            Have a data challenge? Let's turn it into insights.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Contact Form */}
-          <div className="bg-matrix-card p-8 rounded-lg border border-primary-500/20">
-            <h3 className="text-2xl font-semibold text-white mb-6">
-              Send a Message
+          <div className="bg-dark-card p-8 rounded-lg border border-neon-blue/20">
+            <h3 className="text-2xl font-semibold text-white mb-6 font-mono">
+              <span className="text-neon-blue">LET'S TALK</span>{' '}
+              <span className="text-white">DATA</span>
             </h3>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
@@ -166,7 +168,7 @@ export default function Contact() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-black border border-primary-500/20 rounded-lg text-white focus:outline-none focus:border-primary-500 transition-colors"
+                  className="w-full px-4 py-3 bg-dark-bg border border-neon-blue/20 rounded-lg text-white focus:outline-none focus:border-neon-blue transition-colors font-sans"
                   placeholder="Your Name"
                 />
               </div>
@@ -185,7 +187,7 @@ export default function Contact() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-black border border-primary-500/20 rounded-lg text-white focus:outline-none focus:border-primary-500 transition-colors"
+                  className="w-full px-4 py-3 bg-dark-bg border border-neon-blue/20 rounded-lg text-white focus:outline-none focus:border-neon-blue transition-colors font-sans"
                   placeholder="your.email@example.com"
                 />
               </div>
@@ -211,9 +213,9 @@ export default function Contact() {
 
               {submitStatus.type && (
                 <div
-                  className={`p-4 rounded-lg ${
+                  className={`p-4 rounded-lg font-sans ${
                     submitStatus.type === 'success'
-                      ? 'bg-primary-500/20 border border-primary-500/40 text-primary-400'
+                      ? 'bg-neon-green/20 border border-neon-green/40 text-neon-green'
                       : 'bg-red-500/20 border border-red-500/40 text-red-400'
                   }`}
                 >
@@ -224,16 +226,16 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full px-6 py-3 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-500/50 disabled:cursor-not-allowed text-white rounded-lg font-semibold transition-all transform hover:scale-105 disabled:transform-none flex items-center justify-center space-x-2"
+                className="w-full px-6 py-3 bg-neon-blue hover:bg-neon-cyan disabled:bg-neon-blue/50 disabled:cursor-not-allowed text-dark-bg rounded-lg font-semibold transition-all transform hover:scale-105 disabled:transform-none flex items-center justify-center space-x-2 font-mono shadow-lg shadow-neon-blue/50"
               >
                 {isSubmitting ? (
                   <>
                     <FaSpinner className="animate-spin" />
-                    <span>Sending...</span>
+                    <span>SENDING...</span>
                   </>
                 ) : (
                   <>
-                    <span>Send Message</span>
+                    <span>HIRE ME FOR INSIGHTS</span>
                     <FaPaperPlane />
                   </>
                 )}
@@ -242,9 +244,10 @@ export default function Contact() {
           </div>
 
           {/* Contact Info */}
-          <div className="bg-matrix-card p-8 rounded-lg border border-primary-500/20">
-            <h3 className="text-2xl font-semibold text-white mb-6">
-              Let's Connect
+          <div className="bg-dark-card p-8 rounded-lg border border-neon-blue/20">
+            <h3 className="text-2xl font-semibold text-white mb-6 font-mono">
+              <span className="text-neon-cyan">LET'S</span>{' '}
+              <span className="text-white">CONNECT</span>
             </h3>
             <p className="text-gray-200 mb-6">
               I'm always open to discussing new projects, creative ideas, or

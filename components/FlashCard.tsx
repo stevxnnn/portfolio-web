@@ -59,15 +59,15 @@ export default function FlashCard({
             : 'opacity-0 translate-y-32 scale-95'
         }`}
       >
-        <div className="bg-matrix-card border-2 border-primary-500/40 rounded-3xl p-8 md:p-12 lg:p-16 shadow-[0_0_50px_rgba(34,197,94,0.1)] transform hover:scale-[1.01] transition-all duration-500 backdrop-blur-sm relative overflow-hidden">
+        <div className="bg-dark-card border-2 border-neon-blue/40 rounded-3xl p-8 md:p-12 lg:p-16 shadow-[0_0_50px_rgba(0,240,255,0.1)] transform hover:scale-[1.01] transition-all duration-500 backdrop-blur-sm relative overflow-hidden">
           {/* Card number indicator */}
           {cardNumber && totalCards && (
-            <div className="absolute top-4 right-4 text-primary-500/60 text-sm font-inter">
+            <div className="absolute top-4 right-4 text-neon-blue/60 text-sm font-mono">
               {String(cardNumber).padStart(2, '0')} / {String(totalCards).padStart(2, '0')}
             </div>
           )}
           {/* Animated border glow */}
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-primary-500/0 via-primary-500/20 to-primary-500/0 opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl"></div>
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-neon-blue/0 via-neon-blue/20 to-neon-blue/0 opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl"></div>
           {children}
         </div>
       </div>
