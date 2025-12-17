@@ -50,7 +50,7 @@ export default function FlashCard({
     <div
       id={id}
       ref={cardRef}
-      className={`min-h-screen flex items-center justify-center px-4 snap-start snap-always ${className}`}
+      className={`min-h-[100dvh] flex items-start md:items-center justify-center px-4 py-10 md:py-0 md:snap-start md:snap-always ${className}`}
     >
       <div
         className={`w-full max-w-6xl transition-all duration-1000 ease-out ${
@@ -59,7 +59,7 @@ export default function FlashCard({
             : 'opacity-0 translate-y-32 scale-95'
         }`}
       >
-        <div className="bg-dark-card border-2 border-neon-blue/40 rounded-3xl p-8 md:p-12 lg:p-16 shadow-[0_0_50px_rgba(0,240,255,0.1)] transform hover:scale-[1.01] transition-all duration-500 backdrop-blur-sm relative overflow-hidden">
+        <div className="bg-dark-card border-2 border-neon-blue/40 rounded-3xl p-6 md:p-12 lg:p-16 shadow-[0_0_50px_rgba(0,240,255,0.1)] transform hover:scale-[1.01] transition-all duration-500 backdrop-blur-sm relative overflow-hidden">
           {/* Card number indicator */}
           {cardNumber && totalCards && (
             <div className="absolute top-4 right-4 text-neon-blue/60 text-sm font-mono">

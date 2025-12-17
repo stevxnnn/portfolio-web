@@ -49,11 +49,12 @@ export default function Projects() {
     {
       headline: 'Tennis Rotation Visualizer',
       problem: 'A real-time, animated simulation of a 3-player tennis match built entirely in Python, visualizing scoring logic, ball physics, and player movement.',
-      solution: 'Enforces rotation rules (including “winner stays on”) and “cooling off” periods after win streaks, driven by asyncio updates with clean state modeling via dataclasses.',
+      solution: 'Enforces rotation rules (including "winner stays on") and "cooling off" periods after win streaks, driven by asyncio updates with clean state modeling via dataclasses.',
       tech: ['Python', 'Flet', 'asyncio', 'dataclasses', 'Railway'],
       github: 'https://tennis-app.up.railway.app/',
       linkLabel: 'Website',
       embedUrl: 'https://tennis-app.up.railway.app/',
+      embedPaddingTop: '140%',
     },
   ]
 
@@ -136,24 +137,38 @@ export default function Projects() {
               </div>
 
               {/* Right Column: Dune Embed, Image, or Screenshot Placeholder */}
-              <div className="bg-dark-bg rounded-lg border border-neon-green/20 p-4 flex items-center justify-center min-h-[400px]">
+              <div className="bg-dark-bg rounded-lg border border-neon-green/20 p-4">
                 {(project as any).embedUrl ? (
-                  <iframe
-                    src={(project as any).embedUrl}
-                    className="w-full h-full min-h-[400px] border-0 rounded"
-                    title={project.headline}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    allow="fullscreen"
-                    allowFullScreen
-                  />
+                  <div className="w-full overflow-hidden rounded">
+                    <div
+                      className="relative w-full"
+                      style={{ paddingTop: (project as any).embedPaddingTop ?? '56.25%' }}
+                    >
+                      <iframe
+                        src={(project as any).embedUrl}
+                        className="absolute inset-0 w-full h-full border-0"
+                        title={project.headline}
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        allow="fullscreen"
+                        allowFullScreen
+                      />
+                    </div>
+                  </div>
                 ) : project.duneEmbed ? (
-                  <iframe
-                    src={`https://dune.com/embeds/${project.duneEmbed}?theme=dark`}
-                    className="w-full h-full min-h-[400px] border-0 rounded"
-                    title={project.headline}
-                    allow="clipboard-write"
-                  />
+                  <div className="w-full overflow-hidden rounded">
+                    <div
+                      className="relative w-full"
+                      style={{ paddingTop: (project as any).embedPaddingTop ?? '100%' }}
+                    >
+                      <iframe
+                        src={`https://dune.com/embeds/${project.duneEmbed}?theme=dark`}
+                        className="absolute inset-0 w-full h-full border-0"
+                        title={project.headline}
+                        allow="clipboard-write"
+                      />
+                    </div>
+                  </div>
                 ) : project.imageUrl ? (
                   <img
                     src={project.imageUrl}
@@ -177,11 +192,13 @@ export default function Projects() {
                     }}
                   />
                 ) : (
-                  <div className="text-center text-gray-500 font-mono text-sm">
-                    <div className="mb-2">📊</div>
-                    <div>Dashboard Preview</div>
-                    <div className="text-xs mt-2 text-gray-600">
-                      Add Dune embed ID to display live chart
+                  <div className="flex items-center justify-center min-h-[220px] text-center text-gray-500 font-mono text-sm">
+                    <div>
+                      <div className="mb-2">📊</div>
+                      <div>Dashboard Preview</div>
+                      <div className="text-xs mt-2 text-gray-600">
+                        Add Dune embed ID to display live chart
+                      </div>
                     </div>
                   </div>
                 )}
@@ -252,23 +269,32 @@ export default function Projects() {
                 </div>
               </div>
 
-              <div className="bg-dark-bg rounded-lg border border-neon-green/20 p-4 flex items-center justify-center min-h-[400px]">
+              <div className="bg-dark-bg rounded-lg border border-neon-green/20 p-4">
                 {(project as any).embedUrl ? (
-                  <iframe
-                    src={(project as any).embedUrl}
-                    className="w-full h-full min-h-[400px] border-0 rounded"
-                    title={project.headline}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    allow="fullscreen"
-                    allowFullScreen
-                  />
+                  <div className="w-full overflow-hidden rounded">
+                    <div
+                      className="relative w-full"
+                      style={{ paddingTop: (project as any).embedPaddingTop ?? '56.25%' }}
+                    >
+                      <iframe
+                        src={(project as any).embedUrl}
+                        className="absolute inset-0 w-full h-full border-0"
+                        title={project.headline}
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        allow="fullscreen"
+                        allowFullScreen
+                      />
+                    </div>
+                  </div>
                 ) : (
-                  <div className="text-center text-gray-500 font-mono text-sm">
-                    <div className="mb-2">📊</div>
-                    <div>Preview</div>
-                    <div className="text-xs mt-2 text-gray-600">
-                      Add an embed URL to display a live demo
+                  <div className="flex items-center justify-center min-h-[220px] text-center text-gray-500 font-mono text-sm">
+                    <div>
+                      <div className="mb-2">📊</div>
+                      <div>Preview</div>
+                      <div className="text-xs mt-2 text-gray-600">
+                        Add an embed URL to display a live demo
+                      </div>
                     </div>
                   </div>
                 )}

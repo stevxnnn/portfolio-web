@@ -13,7 +13,7 @@ export default function Home() {
   const totalCards = 4
 
   return (
-    <main className="min-h-screen overflow-y-scroll snap-y snap-mandatory">
+    <main className="min-h-[100dvh] overflow-y-auto md:overflow-y-scroll md:snap-y md:snap-mandatory">
       <Navigation />
       <Hero />
       <FlashCard id="about" cardNumber={1} totalCards={totalCards}>
