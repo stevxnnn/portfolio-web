@@ -10,9 +10,13 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+<<<<<<< HEAD
     "@tsparticles/engine": "^3.9.1",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
+=======
+    "@vercel/analytics": "^1.6.1",
+>>>>>>> 8384a800080fd4127d41779779f4a0eca043e482
     "geist": "^1.5.1",
     "next": "^14.0.0",
     "react": "^18.2.0",
