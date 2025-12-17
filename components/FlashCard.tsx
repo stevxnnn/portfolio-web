@@ -21,6 +21,14 @@ export default function FlashCard({
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const checkMobile = () => {
+      if (typeof window !== 'undefined' && window.innerWidth < 768) {
+        setIsVisible(true)
+      }
+    }
+    
+    checkMobile()
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -30,8 +38,8 @@ export default function FlashCard({
         })
       },
       {
-        threshold: 0.2,
-        rootMargin: '0px',
+        threshold: 0.05,
+        rootMargin: '100px',
       }
     )
 
