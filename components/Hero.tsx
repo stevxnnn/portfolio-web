@@ -1,116 +1,156 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { FaArrowDown } from 'react-icons/fa'
-import ParticlesBackground from './ParticlesBackground'
+
+
+const LINES = [
+  { prefix: '$', text: 'whoami', delay: 600 },
+  { prefix: '>', text: 'Steven Liew — On-Chain Data Analyst', delay: 1200 },
+  { prefix: '$', text: 'cat mission.txt', delay: 800 },
+  { prefix: '>', text: 'Rigorous enough for the boardroom.', delay: 900 },
+  { prefix: '>', text: 'Sharp enough for the trenches.', delay: 700 },
+  { prefix: '$', text: 'echo $ALPHA_STATUS', delay: 600 },
+  { prefix: '>', text: '🟢  ACTIVE', delay: 400 },
+]
 
 export default function Hero() {
-  const [isVisible, setIsVisible] = useState(false)
-  const [gasPrice, setGasPrice] = useState<string>('--')
-  const [ethPrice, setEthPrice] = useState<string>('--')
+  const [visibleLines, setVisibleLines] = useState<number>(0)
+  const [currentChar, setCurrentChar] = useState(0)
+  const [isTyping, setIsTyping] = useState(true)
 
-  useEffect(() => {
-    setIsVisible(true)
-  }, [])
 
-  // Fetch live Ethereum gas price
+  // Typing animation
   useEffect(() => {
-    const fetchGasPrice = async () => {
-      try {
-        const response = await fetch('https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken')
-        const data = await response.json()
-        if (data.status === '1') {
-          const gwei = (parseInt(data.result.SafeGasPrice) / 10).toFixed(1)
-          setGasPrice(gwei)
-        }
-      } catch (error) {
-        console.error('Failed to fetch gas price:', error)
-      }
+    if (visibleLines >= LINES.length) {
+      setIsTyping(false)
+      return
     }
 
-    fetchGasPrice()
-    const interval = setInterval(fetchGasPrice, 30000) // Update every 30 seconds
-    return () => clearInterval(interval)
-  }, [])
-
-  // Fetch ETH price
-  useEffect(() => {
-    const fetchEthPrice = async () => {
-      try {
-        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
-        const data = await response.json()
-        if (data.ethereum) {
-          setEthPrice(`$${data.ethereum.usd.toLocaleString()}`)
-        }
-      } catch (error) {
-        console.error('Failed to fetch ETH price:', error)
-      }
+    const line = LINES[visibleLines]
+    if (currentChar < line.text.length) {
+      const speed = line.prefix === '$' ? 45 : 25
+      const timer = setTimeout(() => setCurrentChar((c) => c + 1), speed)
+      return () => clearTimeout(timer)
+    } else {
+      const timer = setTimeout(() => {
+        setVisibleLines((l) => l + 1)
+        setCurrentChar(0)
+      }, line.delay)
+      return () => clearTimeout(timer)
     }
+  }, [visibleLines, currentChar])
 
-    fetchEthPrice()
-    const interval = setInterval(fetchEthPrice, 60000) // Update every minute
-    return () => clearInterval(interval)
-  }, [])
+
+
+  const renderLine = useCallback(
+    (index: number) => {
+      const line = LINES[index]
+      const isCurrentLine = index === visibleLines
+      const text = isCurrentLine ? line.text.slice(0, currentChar) : line.text
+      const isCommand = line.prefix === '$'
+
+      return (
+        <div
+          key={index}
+          className={`flex items-start gap-3 ${index < visibleLines
+            ? 'opacity-100'
+            : isCurrentLine
+              ? 'opacity-100'
+              : 'opacity-0'
+            } transition-opacity duration-300`}
+        >
+          <span
+            className={`flex-shrink-0 font-mono text-sm ${isCommand ? 'text-accent-gold' : 'text-slate-500'
+              }`}
+          >
+            {line.prefix}
+          </span>
+          <span
+            className={`font-mono text-sm md:text-base ${isCommand
+              ? 'text-slate-200'
+              : index === 6
+                ? 'text-accent-emerald font-bold'
+                : 'text-slate-400'
+              }`}
+          >
+            {text}
+            {isCurrentLine && isTyping && (
+              <span className="inline-block w-2 h-4 ml-0.5 bg-accent-gold animate-typing-cursor align-middle" />
+            )}
+          </span>
+        </div>
+      )
+    },
+    [visibleLines, currentChar, isTyping]
+  )
 
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden bg-dark-bg snap-start snap-always"
+      className="min-h-[100dvh] flex flex-col items-center justify-center relative overflow-hidden"
     >
-      {/* Particle Network Background */}
-      <ParticlesBackground />
+      {/* Ambient background glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-accent-gold/[0.03] blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-accent-blue/[0.04] blur-[100px] pointer-events-none" />
 
-      {/* Live Data Ticker */}
-      <div className="absolute top-6 left-6 right-6 flex justify-center gap-8 z-20">
-        <div className="bg-dark-card/80 backdrop-blur-sm border border-neon-blue/30 rounded-lg px-4 py-2 font-mono text-sm">
-          <span className="text-gray-400">ETH:</span>
-          <span className="text-neon-blue ml-2">{ethPrice}</span>
-        </div>
-        <div className="bg-dark-card/80 backdrop-blur-sm border border-neon-green/30 rounded-lg px-4 py-2 font-mono text-sm">
-          <span className="text-gray-400">Gas:</span>
-          <span className="text-neon-green ml-2">{gasPrice} gwei</span>
-        </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
-        <div
-          className={`text-center transition-all duration-1000 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
-        >
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 font-mono">
-            <span className="bg-gradient-to-r from-neon-blue via-neon-cyan to-neon-green bg-clip-text text-transparent">
-              On-Chain Data
-            </span>
-            <br />
-            <span className="text-white">Analyst</span>
-          </h1>
 
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto font-sans">
-          Rigorous enough for the boardroom. Sharp enough for the trenches。
-          </p>
+      {/* Terminal */}
+      <div className="w-full max-w-2xl mx-auto px-6 relative z-10">
+        <div className="gradient-border">
+          <div className="bg-dark-card rounded-2xl p-6 md:p-10">
+            {/* Terminal header */}
+            <div className="flex items-center gap-2 mb-6 pb-4 border-b border-dark-border">
+              <div className="w-3 h-3 rounded-full bg-red-500/80" />
+              <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+              <div className="w-3 h-3 rounded-full bg-green-500/80" />
+              <span className="ml-3 text-xs text-slate-500 font-mono">
+                analyst@portfolio ~ %
+              </span>
+            </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a
-              href="#projects"
-              className="px-8 py-3 bg-neon-blue hover:bg-neon-cyan text-dark-bg rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg shadow-neon-blue/50 hover:shadow-xl hover:shadow-neon-blue/70 font-mono"
-            >
-              VIEW WORK
-            </a>
-            <a
-              href="#contact"
-              className="px-8 py-3 border-2 border-neon-blue text-neon-blue hover:bg-neon-blue/10 rounded-lg font-semibold transition-all transform hover:scale-105 font-mono"
-            >
-              LET'S TALK DATA
-            </a>
+            {/* Terminal lines */}
+            <div className="space-y-3 min-h-[200px]">
+              {LINES.map((_, index) => {
+                if (index <= visibleLines) return renderLine(index)
+                return null
+              })}
+            </div>
           </div>
         </div>
 
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <a href="#about" className="text-neon-blue hover:text-neon-cyan">
-            <FaArrowDown size={24} />
+        {/* CTAs below terminal */}
+        <div
+          className={`flex flex-col sm:flex-row gap-4 justify-center items-center mt-10 transition-all duration-700 ${!isTyping ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}
+        >
+          <a
+            href="#projects"
+            className="px-8 py-3 bg-accent-gold hover:bg-accent-gold-light text-dark-bg rounded-xl font-semibold transition-all hover:scale-105 shadow-lg shadow-accent-gold/20 hover:shadow-xl hover:shadow-accent-gold/30 font-mono text-sm"
+          >
+            VIEW MY WORK
+          </a>
+          <a
+            href="#contact"
+            className="px-8 py-3 border border-accent-gold/40 text-accent-gold hover:bg-accent-gold/10 rounded-xl font-semibold transition-all hover:scale-105 font-mono text-sm"
+          >
+            LET'S TALK DATA
           </a>
         </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div
+        className={`absolute bottom-10 left-1/2 -translate-x-1/2 transition-all duration-700 ${!isTyping ? 'opacity-100' : 'opacity-0'
+          }`}
+      >
+        <a
+          href="#about"
+          className="text-accent-gold/60 hover:text-accent-gold animate-float"
+        >
+          <FaArrowDown size={20} />
+        </a>
       </div>
     </section>
   )

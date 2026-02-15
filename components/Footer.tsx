@@ -1,89 +1,59 @@
-'use client'
-
 import {
-  FaEnvelope,
   FaLinkedin,
   FaGithub,
-  FaTwitter,
+  FaEnvelope,
 } from 'react-icons/fa'
 
-// Dune Analytics Icon Component
-const DuneIcon = ({ className }: { className?: string }) => (
-  <img
-    src="https://image.coinpedia.org/app_uploads/profile/1662614524274lcltlj6gvk.png"
-    alt="Dune Analytics"
-    className={className}
-    style={{
-      width: '24px',
-      height: '24px',
-      objectFit: 'contain',
-      borderRadius: '50%',
-      backgroundColor: 'transparent',
-      mixBlendMode: 'screen',
-    }}
-  />
-)
-
 export default function Footer() {
-  const socialLinks = [
-    {
-      name: 'Email',
-      icon: <FaEnvelope />,
-      href: 'mailto:stevenliew929@gmail.com',
-      color: 'text-red-400 hover:text-red-300',
-    },
-    {
-      name: 'LinkedIn',
-      icon: <FaLinkedin />,
-      href: 'https://linkedin.com/in/liewsteven',
-      color: 'text-blue-400 hover:text-blue-300',
-    },
-    {
-      name: 'GitHub',
-      icon: <FaGithub />,
-      href: 'https://github.com/stevxnnn',
-      color: 'text-gray-400 hover:text-gray-300',
-    },
-    {
-      name: 'Twitter',
-      icon: <FaTwitter />,
-      href: 'https://twitter.com/yourusername',
-      color: 'text-sky-400 hover:text-sky-300',
-    },
-    {
-      name: 'Dune',
-      icon: <DuneIcon className="w-6 h-6" />,
-      href: 'https://dune.com/zardy',
-      color: 'opacity-80 hover:opacity-100 transition-opacity',
-    },
-  ]
-
   return (
-    <footer className="bg-dark-bg border-t border-neon-blue/20 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-4 md:mb-0">
-            <p className="text-gray-400 font-mono text-sm">
-              © {new Date().getFullYear()} On-Chain Data Analyst
+    <footer className="border-t border-dark-border bg-dark-bg">
+      <div className="max-w-6xl mx-auto px-6 py-10 pb-28 md:pb-10">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-center md:text-left">
+            <a
+              href="#home"
+              className="font-mono text-sm text-accent-gold font-bold tracking-wider"
+            >
+              SL<span className="text-slate-500">.</span>
+            </a>
+            <p className="text-xs text-slate-600 mt-1 font-sans">
+              On-Chain Data Analyst
             </p>
           </div>
-          <div className="flex space-x-6">
-            {socialLinks.map((link, index) => (
-              <a
-                key={index}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${link.color} text-2xl transition-transform transform hover:scale-110`}
-                aria-label={link.name}
-              >
-                {link.icon}
-              </a>
-            ))}
+
+          <div className="flex items-center gap-4">
+            <a
+              href="mailto:stevenliew929@gmail.com"
+              className="text-slate-500 hover:text-accent-gold transition-colors"
+              aria-label="Email"
+            >
+              <FaEnvelope size={16} />
+            </a>
+            <a
+              href="https://linkedin.com/in/liewsteven"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-500 hover:text-accent-blue transition-colors"
+              aria-label="LinkedIn"
+            >
+              <FaLinkedin size={16} />
+            </a>
+            <a
+              href="https://github.com/stevxnnn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-500 hover:text-slate-200 transition-colors"
+              aria-label="GitHub"
+            >
+              <FaGithub size={16} />
+            </a>
           </div>
+
+          <p className="text-xs text-slate-600 font-sans">
+            © {new Date().getFullYear()} Steven Liew
+          </p>
         </div>
       </div>
     </footer>
   )
 }
-

@@ -1,33 +1,73 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import Hero from '@/components/Hero'
 import About from '@/components/About'
 import Projects from '@/components/Projects'
 import Skills from '@/components/Skills'
 import Contact from '@/components/Contact'
 import Navigation from '@/components/Navigation'
-import FlashCard from '@/components/FlashCard'
 import Footer from '@/components/Footer'
 
 export default function Home() {
-  const totalCards = 4
+  const cursorRef = useRef<HTMLDivElement>(null)
+
+  // Cursor follower glow (desktop)
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (cursorRef.current) {
+        cursorRef.current.style.left = `${e.clientX}px`
+        cursorRef.current.style.top = `${e.clientY}px`
+      }
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+
+  // Scroll-reveal observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+          }
+        })
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    )
+
+    document.querySelectorAll('.reveal-section').forEach((el) => {
+      observer.observe(el)
+    })
+
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <main className="min-h-[100dvh] overflow-y-auto md:overflow-y-scroll md:snap-y md:snap-mandatory">
+    <main className="min-h-screen overflow-x-hidden">
+      {/* Cursor glow */}
+      <div ref={cursorRef} className="cursor-glow" />
+
       <Navigation />
       <Hero />
-      <FlashCard id="about" cardNumber={1} totalCards={totalCards}>
+
+      <div className="reveal-section">
         <About />
-      </FlashCard>
-      <FlashCard id="skills" cardNumber={2} totalCards={totalCards}>
+      </div>
+
+      <div className="reveal-section">
         <Skills />
-      </FlashCard>
-      <FlashCard id="projects" cardNumber={3} totalCards={totalCards}>
+      </div>
+
+      <div className="reveal-section">
         <Projects />
-      </FlashCard>
-      <FlashCard id="contact" cardNumber={4} totalCards={totalCards}>
+      </div>
+
+      <div className="reveal-section">
         <Contact />
-      </FlashCard>
+      </div>
+
       <Footer />
     </main>
   )

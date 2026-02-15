@@ -13,32 +13,68 @@ module.exports = {
         inter: ['var(--font-inter)', 'sans-serif'],
       },
       colors: {
-        primary: {
-          50: '#e0f2fe',
-          100: '#bae6fd',
-          200: '#7dd3fc',
-          300: '#38bdf8',
-          400: '#0ea5e9',
-          500: '#0284c7',
-          600: '#0369a1',
-          700: '#075985',
-          800: '#0c4a6e',
-          900: '#082f49',
-        },
-        neon: {
-          blue: '#00f0ff',
-          green: '#00ff41',
-          purple: '#9945ff',
-          cyan: '#00d9ff',
+        accent: {
+          gold: '#F5A623',
+          'gold-light': '#FFD080',
+          'gold-dim': '#A67415',
+          blue: '#3B82F6',
+          'blue-light': '#60A5FA',
+          emerald: '#34D399',
         },
         dark: {
-          bg: '#0a0a0f',
-          card: '#0f0f1a',
-          border: '#1a1a2e',
+          bg: '#0B0F1A',
+          'bg-lighter': '#101626',
+          card: '#131A2E',
+          'card-hover': '#182240',
+          border: '#1E293B',
+          'border-glow': '#2A3A5C',
+        },
+      },
+      animation: {
+        'fade-up': 'fadeUp 0.8s ease-out forwards',
+        'fade-in': 'fadeIn 0.6s ease-out forwards',
+        'slide-in-left': 'slideInLeft 0.6s ease-out forwards',
+        'slide-in-right': 'slideInRight 0.6s ease-out forwards',
+        'counter-up': 'counterPulse 0.3s ease-out',
+        'glow-pulse': 'glowPulse 3s ease-in-out infinite',
+        'float': 'float 6s ease-in-out infinite',
+        'typing-cursor': 'blink 1s step-end infinite',
+      },
+      keyframes: {
+        fadeUp: {
+          '0%': { opacity: '0', transform: 'translateY(40px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideInLeft: {
+          '0%': { opacity: '0', transform: 'translateX(-40px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        slideInRight: {
+          '0%': { opacity: '0', transform: 'translateX(40px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        counterPulse: {
+          '0%': { transform: 'scale(1.1)' },
+          '100%': { transform: 'scale(1)' },
+        },
+        glowPulse: {
+          '0%, 100%': { opacity: '0.4' },
+          '50%': { opacity: '0.8' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        blink: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0' },
         },
       },
     },
   },
   plugins: [],
 }
-

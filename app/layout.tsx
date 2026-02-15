@@ -16,8 +16,9 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'On-Chain Data Analyst | Portfolio',
-  description: 'Portfolio of an on-chain data analyst specializing in blockchain analytics and data insights',
+  title: 'Steven Liew | On-Chain Data Analyst',
+  description:
+    'Portfolio of Steven Liew — on-chain data analyst specializing in blockchain analytics, Dune dashboards, and high-signal data insights.',
 }
 
 export default function RootLayout({
@@ -27,7 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${jetbrainsMono.variable} ${inter.variable}`}>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} antialiased bg-dark-bg text-slate-200`}>
         {children}
         <Analytics />
       </body>

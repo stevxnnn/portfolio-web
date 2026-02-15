@@ -1,105 +1,125 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { FaBars, FaTimes } from 'react-icons/fa'
+import {
+  FaHome,
+  FaUser,
+  FaCode,
+  FaChartBar,
+  FaEnvelope,
+  FaBars,
+  FaTimes,
+} from 'react-icons/fa'
+
+const NAV_ITEMS = [
+  { name: 'Home', href: '#home', icon: FaHome },
+  { name: 'About', href: '#about', icon: FaUser },
+  { name: 'Skills', href: '#skills', icon: FaCode },
+  { name: 'Projects', href: '#projects', icon: FaChartBar },
+  { name: 'Contact', href: '#contact', icon: FaEnvelope },
+]
 
 export default function Navigation() {
-  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('home')
+  const [scrolled, setScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' },
-  ]
-
-  // Close menu when clicking outside or on a link
+  // Track active section + scroll state
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement
-      if (
-        isSideMenuOpen &&
-        !target.closest('.side-menu') &&
-        !target.closest('.menu-button')
-      ) {
-        setIsSideMenuOpen(false)
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50)
+
+      const sections = NAV_ITEMS.map((item) => item.href.slice(1))
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i])
+        if (el) {
+          const rect = el.getBoundingClientRect()
+          if (rect.top <= window.innerHeight / 3) {
+            setActiveSection(sections[i])
+            break
+          }
+        }
       }
     }
 
-    if (isSideMenuOpen) {
-      document.addEventListener('click', handleClickOutside)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = 'unset'
+      document.body.style.overflow = ''
     }
-
     return () => {
-      document.removeEventListener('click', handleClickOutside)
-      document.body.style.overflow = 'unset'
+      document.body.style.overflow = ''
     }
-  }, [isSideMenuOpen])
+  }, [mobileMenuOpen])
 
   return (
     <>
-      {/* Menu Button - Top Right */}
-      <button
-        onClick={() => setIsSideMenuOpen(!isSideMenuOpen)}
-        className="fixed top-6 right-6 z-50 menu-button p-3 bg-dark-card border border-neon-blue/40 rounded-lg text-neon-blue hover:text-neon-cyan hover:border-neon-blue/60 transition-all duration-300 shadow-lg hover:shadow-xl shadow-neon-blue/20"
-        aria-label="Toggle menu"
-      >
-        {isSideMenuOpen ? (
-          <FaTimes size={24} />
-        ) : (
-          <FaBars size={24} />
-        )}
-      </button>
-
-      {/* Side Menu Overlay */}
-      {isSideMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300"
-          onClick={() => setIsSideMenuOpen(false)}
-        />
-      )}
-
-      {/* Side Menu */}
+      {/* ─── Desktop top bar ─── */}
       <nav
-        className={`side-menu fixed top-0 right-0 h-full w-80 bg-dark-card border-l-2 border-neon-blue/40 z-50 transform transition-transform duration-300 ease-in-out ${
-          isSideMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        } shadow-2xl`}
+        className={`fixed top-0 left-0 right-0 z-50 hidden md:block transition-all duration-300 ${scrolled
+            ? 'bg-dark-bg/90 backdrop-blur-lg border-b border-dark-border shadow-lg'
+            : 'bg-transparent'
+          }`}
       >
-        <div className="flex flex-col h-full p-8">
-          {/* Close button inside menu */}
-          <div className="flex justify-end mb-8">
-            <button
-              onClick={() => setIsSideMenuOpen(false)}
-              className="text-neon-blue hover:text-neon-cyan transition-colors"
-              aria-label="Close menu"
-            >
-              <FaTimes size={24} />
-            </button>
-          </div>
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <a
+            href="#home"
+            className="font-mono text-sm text-accent-gold font-bold tracking-wider hover:text-accent-gold-light transition-colors"
+          >
+            SL<span className="text-slate-500">.</span>
+          </a>
 
-          {/* Navigation Links */}
-          <div className="flex flex-col space-y-6">
-            {navLinks.map((link, index) => (
+          <div className="flex items-center gap-8">
+            {NAV_ITEMS.map((item) => (
               <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setIsSideMenuOpen(false)}
-                className="text-2xl font-semibold text-gray-200 hover:text-neon-blue transition-all duration-300 transform hover:translate-x-2 hover:scale-105 border-b border-neon-blue/20 pb-4 font-mono"
-                style={{
-                  animationDelay: `${index * 100}ms`,
-                }}
+                key={item.name}
+                href={item.href}
+                className={`relative font-mono text-xs uppercase tracking-widest transition-colors duration-300 ${activeSection === item.href.slice(1)
+                    ? 'text-accent-gold'
+                    : 'text-slate-400 hover:text-slate-200'
+                  }`}
               >
-                {link.name}
+                {item.name}
+                {activeSection === item.href.slice(1) && (
+                  <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent-gold rounded-full" />
+                )}
               </a>
             ))}
           </div>
         </div>
       </nav>
+
+      {/* ─── Mobile bottom nav ─── */}
+      <div className="bottom-nav md:hidden">
+        <div className="flex items-center justify-around px-2">
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon
+            const isActive = activeSection === item.href.slice(1)
+            return (
+              <a
+                key={item.name}
+                href={item.href}
+                className={`flex flex-col items-center gap-1 py-1 px-3 rounded-lg transition-all duration-200 ${isActive
+                    ? 'text-accent-gold'
+                    : 'text-slate-500 active:text-slate-300'
+                  }`}
+              >
+                <Icon size={18} />
+                <span className="text-[10px] font-mono">{item.name}</span>
+                {isActive && (
+                  <span className="absolute top-0 w-6 h-0.5 bg-accent-gold rounded-full" />
+                )}
+              </a>
+            )
+          })}
+        </div>
+      </div>
     </>
   )
 }
-
