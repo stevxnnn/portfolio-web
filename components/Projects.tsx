@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-interface Project {
+export interface Project {
   headline: string
   problem: string
   solution: string
@@ -93,8 +93,8 @@ const FREETIME_PROJECTS: Project[] = [
     problem: 'Wanted to create a fun, interactive digital invitation card for Valentine\'s Day.',
     solution: 'Built a personalized web-based dynamic invitation with interactive elements and animations.',
     tech: ['Next.js', 'React', 'Tailwind CSS'],
-    link: 'https://github.com/stevxnnn/vday',
-    linkLabel: 'Source Code',
+    link: 'https://vday14022026.vercel.app/',
+    linkLabel: 'Live Demo',
     duneEmbed: null,
   },
   {
@@ -110,7 +110,11 @@ const FREETIME_PROJECTS: Project[] = [
 
 type Tab = 'onchain' | 'freetime'
 
-export default function Projects() {
+interface ProjectsProps {
+  onOpenProject?: (project: Project) => void
+}
+
+export default function Projects({ onOpenProject }: ProjectsProps = {}) {
   const [activeTab, setActiveTab] = useState<Tab>('onchain')
   const [expandedProject, setExpandedProject] = useState<number | null>(null)
 
@@ -189,9 +193,18 @@ export default function Projects() {
                         <strong className="text-win-teal text-base">Solution:</strong>
                         <p className="mt-2 leading-relaxed text-sm md:text-base">{project.solution}</p>
                       </div>
-                      <div className="mt-5 pt-3 border-t border-dashed border-[#808080]">
-                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-700 underline flex items-center gap-2 hover:bg-blue-100 p-2 border border-transparent hover:border-blue-300 w-fit font-bold text-base">
-                          » Exec {project.linkLabel}
+                      <div className="mt-5 pt-3 border-t border-dashed border-[#808080] flex flex-col gap-2">
+                        {onOpenProject && (
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); onOpenProject(project); }}
+                            className="text-win-blue font-bold tracking-wide flex items-center gap-2 hover:bg-[#d4d0c8] p-2 border border-transparent hover:border-win-shadow hover:shadow-[inset_1px_1px_0_0_#ffffff] w-fit active:shadow-[inset_1px_1px_0_0_#808080]"
+                          >
+                            <img src="/icons/computer_explorer-4.png" alt="IE" className="w-5 h-5" />
+                            Open Windows
+                          </button>
+                        )}
+                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-black items-center gap-2 hover:bg-win-blue hover:text-white p-2 border border-transparent w-fit font-bold text-base inline-flex">
+                          » Exec external {project.linkLabel}
                         </a>
                       </div>
                     </div>
