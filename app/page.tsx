@@ -8,7 +8,7 @@ import Taskbar, { TaskbarItem } from '@/components/Taskbar'
 // Import content sections
 import Hero from '@/components/Hero'
 import About from '@/components/About'
-import Projects from '@/components/Projects'
+import Projects, { Project } from '@/components/Projects'
 import Skills from '@/components/Skills'
 import Contact from '@/components/Contact'
 
@@ -133,6 +133,72 @@ export default function Home() {
     }
   }
 
+  // NEW: Dynamic Window creation logic for embedded viewers
+  const handleOpenProject = (project: Project) => {
+    const windowId = `project-${project.headline.replace(/\s+/g, '-').toLowerCase()}`;
+    
+    // If window exists, focus it
+    if (windows.some(w => w.id === windowId)) {
+      focusWindow(windowId);
+      return;
+    }
+
+    // Determine the source URL
+    let iframeSrc = '';
+    if (project.duneEmbed) {
+      iframeSrc = `https://dune.com/embeds/${project.duneEmbed}`;
+    } else if (project.embedUrl) {
+      iframeSrc = project.embedUrl;
+    } else {
+      iframeSrc = project.link;
+    }
+
+    const isGithub = iframeSrc.includes('github.com');
+    const isMobile = window.innerWidth < 768;
+
+    const newWindow: WindowState = {
+      id: windowId,
+      title: `Internet Explorer - ${project.headline}`,
+      isOpen: true,
+      isMinimized: false,
+      isActive: true,
+      icon: <img src="/icons/computer_explorer-4.png" alt="IE" className="w-full h-full object-contain pointer-events-none" />,
+      content: (
+        <div className="w-full h-full bg-[#c0c0c0] flex flex-col font-sans">
+          {/* Mock IE Address Bar */}
+          <div className="flex items-center gap-2 p-1 border-b border-[#808080]">
+            <span className="text-sm mx-1 text-black">Address</span>
+            <div className="bg-white border border-[#808080] px-2 py-[2px] w-full font-mono text-xs md:text-sm text-black truncate shadow-[inset_1px_1px_0_rgba(0,0,0,0.5)]">
+              {iframeSrc}
+            </div>
+          </div>
+          {/* IFrame View */}
+          <div className="flex-1 overflow-auto bg-white p-[2px] shadow-[inset_1px_1px_0_0_#808080,inset_-1px_-1px_0_0_#ffffff]">
+             {isGithub ? (
+                <div className="flex flex-col items-center justify-center p-8 text-center h-full text-black bg-win-gray border-4 border-double border-[#808080] m-4">
+                  <span className="text-4xl mb-4">⚠️</span>
+                  <h2 className="font-bold text-xl mb-2">Access Denied by Host</h2>
+                  <p className="max-w-[400px]">GitHub repositories actively block embedded external viewing due to their X-Frame-Options security policies.</p>
+                  <button 
+                    onClick={() => window.open(iframeSrc, '_blank')}
+                    className="mt-6 win-button px-6 py-2 font-bold"
+                  >
+                    Open in external tab ↗
+                  </button>
+                </div>
+             ) : (
+                <iframe src={iframeSrc} className="w-full h-full border-none bg-white" title={project.headline} />
+             )}
+          </div>
+        </div>
+      ),
+      defaultPosition: { x: isMobile ? 0 : 50, y: isMobile ? 0 : 50 },
+      defaultSize: { width: isMobile ? '100vw' : 850, height: isMobile ? 'calc(100vh - 40px)' : 600 }
+    };
+    
+    setWindows([...windows, newWindow]);
+  }
+
   const activeWindows = windows.filter(w => w.isOpen)
   // Ensure the active window renders last so it's on top of non-active windows
   const sortedWindows = [...activeWindows].sort((a, b) => (a.isActive ? 1 : 0) - (b.isActive ? 1 : 0))
@@ -173,7 +239,7 @@ export default function Home() {
             defaultPosition={win.defaultPosition}
             defaultSize={win.defaultSize}
           >
-            {win.content}
+            {win.id === 'projects' ? <Projects onOpenProject={handleOpenProject} /> : win.content}
           </Window98>
         </div>
       ))}
