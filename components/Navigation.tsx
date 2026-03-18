@@ -63,14 +63,14 @@ export default function Navigation() {
       {/* ─── Desktop top bar ─── */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 hidden md:block transition-all duration-300 ${scrolled
-            ? 'bg-dark-bg/90 backdrop-blur-lg border-b border-dark-border shadow-lg'
-            : 'bg-transparent'
+          ? 'bg-dark-bg/90 backdrop-blur-lg border-b border-dark-border shadow-lg'
+          : 'bg-transparent'
           }`}
       >
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <a
             href="#home"
-            className="font-mono text-sm text-accent-gold font-bold tracking-wider hover:text-accent-gold-light transition-colors"
+            className="font-mono text-sm text-accent-blue font-bold tracking-wider hover:text-accent-blue-light transition-colors"
           >
             SL<span className="text-slate-500">.</span>
           </a>
@@ -81,13 +81,13 @@ export default function Navigation() {
                 key={item.name}
                 href={item.href}
                 className={`relative font-mono text-xs uppercase tracking-widest transition-colors duration-300 ${activeSection === item.href.slice(1)
-                    ? 'text-accent-gold'
-                    : 'text-slate-400 hover:text-slate-200'
+                  ? 'text-accent-blue'
+                  : 'text-slate-400 hover:text-slate-200'
                   }`}
               >
                 {item.name}
                 {activeSection === item.href.slice(1) && (
-                  <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent-gold rounded-full" />
+                  <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent-blue rounded-full" />
                 )}
               </a>
             ))}
@@ -106,14 +106,14 @@ export default function Navigation() {
                 key={item.name}
                 href={item.href}
                 className={`flex flex-col items-center gap-1 py-1 px-3 rounded-lg transition-all duration-200 ${isActive
-                    ? 'text-accent-gold'
-                    : 'text-slate-500 active:text-slate-300'
+                  ? 'text-accent-blue'
+                  : 'text-slate-500 active:text-slate-300'
                   }`}
               >
                 <Icon size={18} />
                 <span className="text-[10px] font-mono">{item.name}</span>
                 {isActive && (
-                  <span className="absolute top-0 w-6 h-0.5 bg-accent-gold rounded-full" />
+                  <span className="absolute top-0 w-6 h-0.5 bg-accent-blue rounded-full" />
                 )}
               </a>
             )

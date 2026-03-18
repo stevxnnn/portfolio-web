@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { FaExternalLinkAlt, FaTimes, FaChevronRight } from 'react-icons/fa'
 
 interface Project {
   headline: string
@@ -89,6 +88,24 @@ const FREETIME_PROJECTS: Project[] = [
     embedUrl: 'https://tennis-app-e3ng.onrender.com/',
     embedPaddingTop: '140%',
   },
+  {
+    headline: 'Valentine\'s Day Invitation Card',
+    problem: 'Wanted to create a fun, interactive digital invitation card for Valentine\'s Day.',
+    solution: 'Built a personalized web-based dynamic invitation with interactive elements and animations.',
+    tech: ['Next.js', 'React', 'Tailwind CSS'],
+    link: 'https://github.com/stevxnnn/vday',
+    linkLabel: 'Source Code',
+    duneEmbed: null,
+  },
+  {
+    headline: 'Superteam Malaysia Website Bounty',
+    problem: 'Superteam Malaysia needed an official, modernized Web3 hub to represent their community ecosystem.',
+    solution: 'Designed and developed a landing page featuring sections for members, partners, and events, adhering to Superteam global brand guidelines.',
+    tech: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase'],
+    link: 'https://superteamweb.vercel.app/',
+    linkLabel: 'Live Demo',
+    duneEmbed: null,
+  },
 ]
 
 type Tab = 'onchain' | 'freetime'
@@ -97,186 +114,94 @@ export default function Projects() {
   const [activeTab, setActiveTab] = useState<Tab>('onchain')
   const [expandedProject, setExpandedProject] = useState<number | null>(null)
 
-  const projects =
-    activeTab === 'onchain' ? ON_CHAIN_PROJECTS : FREETIME_PROJECTS
+  const projects = activeTab === 'onchain' ? ON_CHAIN_PROJECTS : FREETIME_PROJECTS
 
   const toggleProject = (index: number) => {
     setExpandedProject(expandedProject === index ? null : index)
   }
 
   return (
-    <section id="projects" className="section-container">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-5xl font-bold mb-4 font-mono">
-          <span className="text-gradient-gold">CASE</span>{' '}
-          <span className="text-white">STUDIES</span>
-        </h2>
-        <div className="w-16 h-0.5 bg-accent-gold/50 mx-auto mb-4" />
-        <p className="text-slate-400 max-w-xl mx-auto font-sans">
-          Real projects solving real problems — on-chain dashboards and freetime
-          builds
-        </p>
+    <div className="p-3 h-full flex flex-col font-sans w-full text-base lg:text-lg">
+      <div className="flex gap-2 mb-3">
+        <button
+          onClick={() => {
+            setActiveTab('onchain')
+            setExpandedProject(null)
+          }}
+          className={`win-button px-6 py-2 flex-1 font-bold text-base ${
+            activeTab === 'onchain' 
+              ? 'bg-[#d4d0c8] shadow-[inset_1px_1px_0_0_#808080,inset_-1px_-1px_0_0_#ffffff] !border-l-[black] !border-t-[black] !border-r-win-highlight !border-b-win-highlight' 
+              : ''
+          }`}
+        >
+          ON-CHAIN
+        </button>
+        <button
+          onClick={() => {
+            setActiveTab('freetime')
+            setExpandedProject(null)
+          }}
+          className={`win-button px-6 py-2 flex-1 font-bold text-base ${
+            activeTab === 'freetime' 
+              ? 'bg-[#d4d0c8] shadow-[inset_1px_1px_0_0_#808080,inset_-1px_-1px_0_0_#ffffff] !border-l-[black] !border-t-[black] !border-r-win-highlight !border-b-win-highlight' 
+              : ''
+          }`}
+        >
+          FREETIME
+        </button>
       </div>
 
-      {/* Tabs */}
-      <div className="flex justify-center mb-10">
-        <div className="inline-flex bg-dark-card rounded-xl p-1 border border-dark-border">
-          <button
-            onClick={() => {
-              setActiveTab('onchain')
-              setExpandedProject(null)
-            }}
-            className={`px-6 py-2.5 rounded-lg font-mono text-xs uppercase tracking-wider transition-all duration-300 ${activeTab === 'onchain'
-              ? 'bg-accent-gold text-dark-bg font-bold shadow-lg shadow-accent-gold/20'
-              : 'text-slate-400 hover:text-slate-200'
-              }`}
-          >
-            On-Chain ({ON_CHAIN_PROJECTS.length})
-          </button>
-          <button
-            onClick={() => {
-              setActiveTab('freetime')
-              setExpandedProject(null)
-            }}
-            className={`px-6 py-2.5 rounded-lg font-mono text-xs uppercase tracking-wider transition-all duration-300 ${activeTab === 'freetime'
-              ? 'bg-accent-gold text-dark-bg font-bold shadow-lg shadow-accent-gold/20'
-              : 'text-slate-400 hover:text-slate-200'
-              }`}
-          >
-            Freetime ({FREETIME_PROJECTS.length})
-          </button>
-        </div>
-      </div>
-
-      {/* Project cards */}
-      <div className="space-y-4 max-w-4xl mx-auto">
-        {projects.map((project, index) => {
-          const isExpanded = expandedProject === index
-
-          return (
-            <div key={`${activeTab}-${index}`} className="gradient-border">
-              <div className="bg-dark-card rounded-2xl overflow-hidden">
-                {/* Compact card header — always visible */}
-                <button
-                  onClick={() => toggleProject(index)}
-                  className="w-full p-5 md:p-6 flex items-center justify-between text-left group hover:bg-dark-card-hover transition-colors"
-                >
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg md:text-xl font-bold text-white font-mono group-hover:text-accent-gold transition-colors truncate">
-                      {project.headline}
-                    </h3>
-                    <div className="flex flex-wrap gap-1.5 mt-2">
-                      {project.tech.map((tag, ti) => (
-                        <span
-                          key={ti}
-                          className="px-2 py-0.5 bg-accent-gold/10 text-accent-gold/80 rounded text-xs font-mono"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+      <div className="win-border-sunken bg-white flex-grow overflow-auto border-[#808080] select-text p-2">
+        <div className="min-w-full md:min-w-[700px] pb-4">
+          {/* Header Row */}
+          <div className="flex bg-win-gray win-border-sunken border-b-0 border-l-0 border-r-0 !border-t-[#ffffff] font-bold text-base">
+            <div className="w-full md:w-5/12 p-2 md:border-r md:border-win-shadow">Filename</div>
+            <div className="hidden md:block md:w-3/12 p-2 border-r border-win-shadow">Project Type</div>
+            <div className="hidden md:block md:w-4/12 p-2">Tech Stack</div>
+          </div>
+          
+          {/* List Items */}
+          <div className="bg-white">
+            {projects.map((project, index) => {
+              const isExpanded = expandedProject === index
+              return (
+                <div key={index} className="border-b border-dotted border-gray-300">
+                  <div 
+                    className={`flex cursor-pointer hover:bg-win-blue hover:text-white ${isExpanded ? 'bg-win-blue text-white' : ''}`}
+                    onClick={() => toggleProject(index)}
+                  >
+                    <div className="w-full md:w-5/12 p-2 truncate flex items-center gap-3 select-none">
+                      <span className="text-[#c0c0c0] font-mono text-sm w-4 flex-shrink-0">[{isExpanded ? '-' : '+'}]</span>
+                      <span className="truncate">{project.headline}</span>
                     </div>
+                    <div className="hidden md:flex md:w-3/12 p-2 truncate text-sm items-center">{project.tech.includes('Dune Analytics') ? 'Dune Dashboard.exe' : 'Web Application.exe'}</div>
+                    <div className="hidden md:flex md:w-4/12 p-2 truncate text-sm items-center">{project.tech.join(', ')}</div>
                   </div>
-                  <FaChevronRight
-                    className={`text-slate-500 ml-4 flex-shrink-0 transition-transform duration-300 ${isExpanded ? 'rotate-90' : ''
-                      }`}
-                  />
-                </button>
-
-                {/* Expanded detail panel */}
-                <div
-                  className={`detail-panel ${isExpanded ? 'open' : ''}`}
-                  style={isExpanded ? { padding: '0 1.5rem 1.5rem' } : {}}
-                >
-                  <div className="border-t border-dark-border pt-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      {/* Left: Problem & Solution */}
-                      <div className="space-y-5">
-                        <div>
-                          <h4 className="text-accent-blue font-mono text-xs uppercase tracking-widest mb-2">
-                            The Problem
-                          </h4>
-                          <p className="text-slate-400 font-sans text-sm leading-relaxed">
-                            {project.problem}
-                          </p>
-                        </div>
-                        <div>
-                          <h4 className="text-accent-gold font-mono text-xs uppercase tracking-widest mb-2">
-                            The Solution
-                          </h4>
-                          <p className="text-slate-400 font-sans text-sm leading-relaxed">
-                            {project.solution}
-                          </p>
-                        </div>
-                        <a
-                          href={project.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 text-accent-gold hover:text-accent-gold-light transition-colors text-sm font-mono"
-                        >
-                          <FaExternalLinkAlt className="text-xs" />
-                          {project.linkLabel}
+                  
+                  {isExpanded && (
+                    <div className="p-5 bg-[#ffffe1] text-win-black m-3 border border-black shadow-[2px_2px_0_rgba(0,0,0,0.5)] cursor-text select-text" onClick={(e) => e.stopPropagation()}>
+                      <h4 className="font-bold underline mb-3 tracking-wider text-lg">PROJECT_DETAILS.TXT</h4>
+                      <div className="mb-3">
+                        <strong className="text-win-blue text-base">Problem:</strong>
+                        <p className="mt-2 leading-relaxed text-sm md:text-base">{project.problem}</p>
+                      </div>
+                      <div className="mb-4">
+                        <strong className="text-win-teal text-base">Solution:</strong>
+                        <p className="mt-2 leading-relaxed text-sm md:text-base">{project.solution}</p>
+                      </div>
+                      <div className="mt-5 pt-3 border-t border-dashed border-[#808080]">
+                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-700 underline flex items-center gap-2 hover:bg-blue-100 p-2 border border-transparent hover:border-blue-300 w-fit font-bold text-base">
+                          » Exec {project.linkLabel}
                         </a>
                       </div>
-
-                      {/* Right: Embed / Preview (lazy loaded) */}
-                      <div className="bg-dark-bg-lighter rounded-xl border border-dark-border p-3 min-h-[280px]">
-                        {isExpanded && project.embedUrl ? (
-                          <div className="w-full overflow-hidden rounded-lg">
-                            <div
-                              className="relative w-full"
-                              style={{
-                                paddingTop: project.embedPaddingTop ?? '56.25%',
-                              }}
-                            >
-                              <iframe
-                                src={project.embedUrl}
-                                className="absolute inset-0 w-full h-full border-0"
-                                title={project.headline}
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                                allow="fullscreen"
-                                allowFullScreen
-                              />
-                            </div>
-                          </div>
-                        ) : isExpanded && project.duneEmbed ? (
-                          <div className="w-full overflow-hidden rounded-lg">
-                            <div
-                              className="relative w-full"
-                              style={{ paddingTop: '100%' }}
-                            >
-                              <iframe
-                                src={`https://dune.com/embeds/${project.duneEmbed}?theme=dark`}
-                                className="absolute inset-0 w-full h-full border-0"
-                                title={project.headline}
-                                allow="clipboard-write"
-                                loading="lazy"
-                              />
-                            </div>
-                          </div>
-                        ) : isExpanded && project.imageUrl ? (
-                          <img
-                            src={project.imageUrl}
-                            alt={project.headline}
-                            className="w-full h-auto rounded-lg max-h-[500px] object-contain"
-                          />
-                        ) : (
-                          <div className="flex items-center justify-center h-full min-h-[280px] text-slate-600 font-mono text-sm">
-                            <div className="text-center">
-                              <div className="text-2xl mb-2">📊</div>
-                              <div>Loading preview...</div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
-              </div>
-            </div>
-          )
-        })}
+              )
+            })}
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
   )
 }

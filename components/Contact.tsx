@@ -2,32 +2,6 @@
 
 import { useState } from 'react'
 import emailjs from '@emailjs/browser'
-import {
-  FaEnvelope,
-  FaLinkedin,
-  FaGithub,
-  FaPaperPlane,
-  FaSpinner,
-  FaCheck,
-} from 'react-icons/fa'
-
-// Dune icon component
-function DuneIcon({ className }: { className?: string }) {
-  return (
-    <img
-      src="https://image.coinpedia.org/app_uploads/profile/1662614524274lcltlj6gvk.png"
-      alt="Dune"
-      className={className}
-      style={{
-        width: '28px',
-        height: '28px',
-        objectFit: 'contain',
-        borderRadius: '50%',
-        mixBlendMode: 'screen',
-      }}
-    />
-  )
-}
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -54,7 +28,7 @@ export default function Contact() {
       setSubmitStatus({
         type: 'error',
         message:
-          'Email service is not configured. Please contact the site administrator.',
+          'Email service is not configured. Please contact the network administrator.',
       })
       setIsSubmitting(false)
       return
@@ -76,13 +50,13 @@ export default function Contact() {
       if (result.status === 200) {
         setSubmitStatus({
           type: 'success',
-          message: "Message sent! I'll get back to you soon.",
+          message: "Data pack transmitted successfully.",
         })
         setFormData({ name: '', email: '', message: '' })
       } else {
         setSubmitStatus({
           type: 'error',
-          message: 'Something went wrong. Please try again.',
+          message: 'Transmission error: packet loss.',
         })
       }
     } catch (error: any) {
@@ -90,7 +64,7 @@ export default function Contact() {
       setSubmitStatus({
         type: 'error',
         message:
-          error.text || 'Failed to send message. Please try again later.',
+          error.text || 'Failed to establish connection to SMTP server.',
       })
     } finally {
       setIsSubmitting(false)
@@ -106,179 +80,77 @@ export default function Contact() {
     })
   }
 
-  const socialLinks = [
-    {
-      name: 'Email',
-      icon: <FaEnvelope />,
-      href: 'mailto:stevenliew929@gmail.com',
-      hoverColor: 'hover:text-red-400',
-    },
-    {
-      name: 'LinkedIn',
-      icon: <FaLinkedin />,
-      href: 'https://linkedin.com/in/liewsteven',
-      hoverColor: 'hover:text-blue-400',
-    },
-    {
-      name: 'GitHub',
-      icon: <FaGithub />,
-      href: 'https://github.com/stevxnnn',
-      hoverColor: 'hover:text-slate-200',
-    },
-    {
-      name: 'Dune',
-      icon: <DuneIcon />,
-      href: 'https://dune.com/zardy',
-      hoverColor: 'hover:text-accent-gold',
-    },
-  ]
-
   return (
-    <section id="contact" className="section-container pb-32 md:pb-20">
-      <div className="text-center mb-14">
-        <h2 className="text-3xl md:text-5xl font-bold mb-4 font-mono">
-          <span className="text-gradient-gold">GET IN</span>{' '}
-          <span className="text-white">TOUCH</span>
-        </h2>
-        <div className="w-16 h-0.5 bg-accent-gold/50 mx-auto mb-4" />
-        <p className="text-slate-400 max-w-xl mx-auto font-sans">
-          Have a data challenge? Let's turn it into insights.
-        </p>
-      </div>
+    <div className="p-4 h-full flex flex-col font-sans w-full bg-win-gray text-base lg:text-lg min-h-[500px]">
+      <div className="win-border-sunken bg-white p-6 flex-grow border-[#808080] overflow-auto flex flex-col items-center sm:items-stretch">
+        <h2 className="font-display text-xl mb-6 text-win-blue drop-shadow-sm border-b-2 border-win-black pb-2">MAIL_CLIENT.EXE</h2>
+        <p className="mb-6">Have a data challenge? Send me a direct broadcast.</p>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        {/* Contact form */}
-        <div className="gradient-border">
-          <div className="bg-dark-card rounded-2xl p-6 md:p-8">
-            <h3 className="text-lg font-bold text-white mb-6 font-mono">
-              <span className="text-accent-gold">LET'S TALK</span> DATA
-            </h3>
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-xs font-mono text-slate-400 mb-2 uppercase tracking-wider"
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 bg-dark-bg-lighter border border-dark-border rounded-xl text-white focus:outline-none focus:border-accent-gold/50 focus:ring-1 focus:ring-accent-gold/20 transition-all font-sans text-sm"
-                  placeholder="Your name"
-                />
-              </div>
+        <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-lg">
+          <div className="flex flex-col">
+            <label htmlFor="name" className="font-bold underline mb-2 w-fit">Sender Name:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className="win-border-sunken p-2 w-full outline-none focus:bg-blue-50 text-base"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="email" className="font-bold underline mb-2 w-fit">Reply-To Address:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="win-border-sunken p-2 w-full outline-none focus:bg-blue-50 text-base"
+              placeholder="user@domain.com"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="message" className="font-bold underline mb-2 w-fit">Message Body:</label>
+            <textarea
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              required
+              rows={5}
+              className="win-border-sunken p-3 w-full outline-none focus:bg-blue-50 resize-y text-base font-mono whitespace-pre-wrap"
+            />
+          </div>
 
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-xs font-mono text-slate-400 mb-2 uppercase tracking-wider"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 bg-dark-bg-lighter border border-dark-border rounded-xl text-white focus:outline-none focus:border-accent-gold/50 focus:ring-1 focus:ring-accent-gold/20 transition-all font-sans text-sm"
-                  placeholder="you@example.com"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-xs font-mono text-slate-400 mb-2 uppercase tracking-wider"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={5}
-                  className="w-full px-4 py-3 bg-dark-bg-lighter border border-dark-border rounded-xl text-white focus:outline-none focus:border-accent-gold/50 focus:ring-1 focus:ring-accent-gold/20 transition-all resize-none font-sans text-sm"
-                  placeholder="Tell me about your project..."
-                />
-              </div>
-
-              {submitStatus.type && (
-                <div
-                  className={`p-4 rounded-xl font-sans text-sm ${submitStatus.type === 'success'
-                      ? 'bg-accent-emerald/10 border border-accent-emerald/30 text-accent-emerald'
-                      : 'bg-red-500/10 border border-red-500/30 text-red-400'
-                    }`}
-                >
-                  {submitStatus.message}
-                </div>
-              )}
-
-              <button
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-win-shadow mt-6">
+             <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full px-6 py-3.5 bg-accent-gold hover:bg-accent-gold-light disabled:bg-accent-gold/40 disabled:cursor-not-allowed text-dark-bg rounded-xl font-bold transition-all hover:scale-[1.02] disabled:hover:scale-100 flex items-center justify-center gap-2 font-mono text-sm shadow-lg shadow-accent-gold/20"
+                className="win-button px-8 py-2 font-bold text-base disabled:opacity-50 active:translate-y-[1px]"
               >
-                {isSubmitting ? (
-                  <>
-                    <FaSpinner className="animate-spin" />
-                    SENDING...
-                  </>
-                ) : submitStatus.type === 'success' ? (
-                  <>
-                    <FaCheck />
-                    SENT!
-                  </>
-                ) : (
-                  <>
-                    SEND MESSAGE
-                    <FaPaperPlane />
-                  </>
-                )}
+                {isSubmitting ? 'Transmitting...' : 'Send Packet'}
               </button>
-            </form>
+             {submitStatus.message && (
+                <span className={`font-bold ${submitStatus.type === 'success' ? 'text-[#10B981]' : 'text-[#EF4444]'}`}>
+                  {submitStatus.message}
+                </span>
+             )}
           </div>
-        </div>
+        </form>
 
-        {/* Connect card */}
-        <div className="gradient-border">
-          <div className="bg-dark-card rounded-2xl p-6 md:p-8 flex flex-col justify-between">
-            <div>
-              <h3 className="text-lg font-bold text-white mb-4 font-mono">
-                <span className="text-accent-blue">LET'S</span> CONNECT
-              </h3>
-              <p className="text-slate-400 text-sm font-sans leading-relaxed mb-8">
-                I'm always open to discussing new projects, creative ideas, or
-                opportunities to be part of your vision. Feel free to reach out
-                through any channel below.
-              </p>
-            </div>
-
-            <div className="flex gap-5">
-              {socialLinks.map((link, index) => (
-                <a
-                  key={index}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-slate-500 ${link.hoverColor} text-2xl transition-all hover:scale-110`}
-                  aria-label={link.name}
-                >
-                  {link.icon}
-                </a>
-              ))}
-            </div>
+        <div className="mt-10 pt-6 border-t border-win-shadow w-full">
+          <p className="font-bold mb-4">Other Communication Protocols:</p>
+          <div className="flex flex-wrap gap-4">
+            <a href="mailto:stevenliew929@gmail.com" className="text-blue-700 underline flex items-center gap-2 hover:bg-blue-100 p-2 border border-transparent hover:border-blue-300 text-base">Email</a>
+            <a href="https://linkedin.com/in/liewsteven" target="_blank" className="text-blue-700 underline flex items-center gap-2 hover:bg-blue-100 p-2 border border-transparent hover:border-blue-300 text-base">LinkedIn</a>
+            <a href="https://github.com/stevxnnn" target="_blank" className="text-blue-700 underline flex items-center gap-2 hover:bg-blue-100 p-2 border border-transparent hover:border-blue-300 text-base">GitHub</a>
+            <a href="https://dune.com/zardy" target="_blank" className="text-blue-700 underline flex items-center gap-2 hover:bg-blue-100 p-2 border border-transparent hover:border-blue-300 text-base">Dune Profile</a>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

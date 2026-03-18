@@ -12,7 +12,7 @@ export default function Footer() {
           <div className="text-center md:text-left">
             <a
               href="#home"
-              className="font-mono text-sm text-accent-gold font-bold tracking-wider"
+              className="font-mono text-sm text-accent-blue font-bold tracking-wider"
             >
               SL<span className="text-slate-500">.</span>
             </a>
@@ -24,7 +24,7 @@ export default function Footer() {
           <div className="flex items-center gap-4">
             <a
               href="mailto:stevenliew929@gmail.com"
-              className="text-slate-500 hover:text-accent-gold transition-colors"
+              className="text-slate-500 hover:text-accent-blue transition-colors"
               aria-label="Email"
             >
               <FaEnvelope size={16} />
