@@ -1,56 +1,51 @@
-import {
-  FaLinkedin,
-  FaGithub,
-  FaEnvelope,
-} from 'react-icons/fa'
+'use client'
+
+import { Github, Linkedin, Mail, BarChart3 } from 'lucide-react'
+
+const SOCIALS = [
+  { icon: Mail, href: 'mailto:stevenliew929@gmail.com', label: 'Email' },
+  { icon: Linkedin, href: 'https://linkedin.com/in/liewsteven', label: 'LinkedIn' },
+  { icon: Github, href: 'https://github.com/stevxnnn', label: 'GitHub' },
+  { icon: BarChart3, href: 'https://dune.com/zardy', label: 'Dune' },
+]
 
 export default function Footer() {
   return (
-    <footer className="border-t border-dark-border bg-dark-bg">
-      <div className="max-w-6xl mx-auto px-6 py-10 pb-28 md:pb-10">
+    <footer className="border-t border-outline-variant/10 bg-surface-container-lowest">
+      <div className="max-w-6xl mx-auto px-6 py-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">
             <a
-              href="#home"
-              className="font-mono text-sm text-accent-blue font-bold tracking-wider"
+              href="#hero"
+              className="font-heading text-lg font-bold text-primary tracking-wider hover:opacity-80 transition-opacity"
             >
-              SL<span className="text-slate-500">.</span>
+              SL<span className="text-on-surface-variant">.</span>
             </a>
-            <p className="text-xs text-slate-600 mt-1 font-sans">
+            <p className="text-xs text-on-surface-variant mt-1 font-body">
               On-Chain Data Analyst
             </p>
           </div>
 
           <div className="flex items-center gap-4">
-            <a
-              href="mailto:stevenliew929@gmail.com"
-              className="text-slate-500 hover:text-accent-blue transition-colors"
-              aria-label="Email"
-            >
-              <FaEnvelope size={16} />
-            </a>
-            <a
-              href="https://linkedin.com/in/liewsteven"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-500 hover:text-accent-blue transition-colors"
-              aria-label="LinkedIn"
-            >
-              <FaLinkedin size={16} />
-            </a>
-            <a
-              href="https://github.com/stevxnnn"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-500 hover:text-slate-200 transition-colors"
-              aria-label="GitHub"
-            >
-              <FaGithub size={16} />
-            </a>
+            {SOCIALS.map((social) => {
+              const Icon = social.icon
+              return (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target={social.href.startsWith('mailto') ? undefined : '_blank'}
+                  rel="noopener noreferrer"
+                  className="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer"
+                  aria-label={social.label}
+                >
+                  <Icon size={16} />
+                </a>
+              )
+            })}
           </div>
 
-          <p className="text-xs text-slate-600 font-sans">
-            © {new Date().getFullYear()} Steven Liew
+          <p className="text-xs text-on-surface-variant font-body">
+            &copy; {new Date().getFullYear()} Steven Liew
           </p>
         </div>
       </div>

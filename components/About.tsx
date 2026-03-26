@@ -1,42 +1,137 @@
 'use client'
 
+import { motion } from 'framer-motion'
+import { Database, Code, BarChart3, Zap } from 'lucide-react'
+
+const STATS = [
+  { label: 'Data Points Analyzed', value: '1TB+', icon: Database },
+  { label: 'Dashboards Built', value: '50+', icon: BarChart3 },
+  { label: 'Protocols Tracked', value: '100+', icon: Zap },
+  { label: 'On-Chain Queries', value: '10K+', icon: Code },
+]
+
+const STACK = [
+  {
+    category: 'Extraction',
+    items: ['The Graph', 'SQL', 'Dune Analytics', 'Flipside', 'Blockscout APIs'],
+  },
+  {
+    category: 'Processing',
+    items: ['Python', 'Node.js', 'TypeScript', 'Web3 Libraries'],
+  },
+  {
+    category: 'Visualization',
+    items: ['React', 'Tableau', 'Dune Dashboards', 'Looker Studio'],
+  },
+]
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, delay: i * 0.1, ease: 'easeOut' as const },
+  }),
+}
+
 export default function About() {
-  const STATS = [
-    { label: 'Data Points Analyzer', value: '1TB+' },
-    { label: 'Dashboards Built', value: '50+' },
-    { label: 'Protocols Tracked', value: '100+' },
-    { label: 'On-Chain Queries', value: '10K+' },
-  ]
-
   return (
-    <div className="p-4 h-full flex flex-col font-sans text-base w-full lg:text-lg">
-      <div className="mb-6">
-        <h2 className="font-display text-xl mb-3 border-b-2 border-win-black pb-2 text-win-blue drop-shadow-sm">ABOUT.HLP</h2>
-        <p className="mb-4 leading-relaxed">
-          For me, analytics is less about making pretty charts and more about uncovering where the <span className="font-bold text-win-blue">real alpha</span> lives.
-        </p>
-        <p className="mb-4 leading-relaxed">
-          I specialize in transforming raw blockchain data into tactical intelligence. Whether it's tracking smart money flows or identifying protocol anomalies, my work is built for operators who need <span className="font-bold text-[#EF4444]">high-signal insights</span> in real-time. This is on-chain sleuthing.
-        </p>
-      </div>
+    <section id="about" className="section-spacing">
+      <div className="max-w-6xl mx-auto px-6">
+        {/* Section label */}
+        <motion.p
+          className="text-label text-primary mb-4"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={fadeUp}
+          custom={0}
+        >
+          About
+        </motion.p>
 
-      <div className="grid grid-cols-2 gap-4 mb-8">
-        {STATS.map((stat, i) => (
-          <div key={i} className="win-border p-4 bg-win-gray flex flex-col items-center justify-center text-center">
-            <span className="font-display text-lg lg:text-xl text-win-blue mb-2 drop-shadow-sm tabular-nums whitespace-nowrap">{stat.value}</span>
-            <span className="text-sm lg:text-base font-bold">{stat.label}</span>
+        <motion.h2
+          className="text-headline text-3xl md:text-4xl text-on-surface mb-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={fadeUp}
+          custom={1}
+        >
+          Turning raw data into
+          <span className="text-primary"> tactical intelligence</span>
+        </motion.h2>
+
+        <motion.div
+          className="grid md:grid-cols-2 gap-12 mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={fadeUp}
+          custom={2}
+        >
+          <div className="space-y-5">
+            <p className="font-body text-on-surface-variant leading-relaxed text-base md:text-lg">
+              For me, analytics is less about making pretty charts and more about uncovering where the{' '}
+              <span className="text-primary font-semibold">real alpha</span> lives.
+            </p>
+            <p className="font-body text-on-surface-variant leading-relaxed text-base md:text-lg">
+              I specialize in transforming raw blockchain data into tactical intelligence. Whether it&apos;s tracking 
+              smart money flows or identifying protocol anomalies, my work is built for operators who need{' '}
+              <span className="text-red-400 font-semibold">high-signal insights</span> in real-time.
+            </p>
           </div>
-        ))}
-      </div>
 
-      <div className="win-border-sunken bg-white p-4 mb-2 flex-grow border-[#808080]">
-        <h3 className="font-bold text-lg border-b border-win-shadow mb-3 text-win-black pb-1">DATABASE DRIVERS / STACK</h3>
-        <ul className="text-base lg:text-lg space-y-3 list-disc pl-6 py-2">
-          <li><strong>Extractor.dll</strong> The Graph, SQL, Dune Analytics, Flipside, Blockscout APIs</li>
-          <li><strong>Processing.exe</strong> Python, Node.js, TypeScript, Web3 Libraries</li>
-          <li><strong>Visualizer.ocx</strong> React, Tableau, Dune Dashboards, Looker Studio</li>
-        </ul>
+          <div className="grid grid-cols-2 gap-4">
+            {STATS.map((stat, i) => {
+              const Icon = stat.icon
+              return (
+                <motion.div
+                  key={i}
+                  className="bg-surface-container-low rounded-lg p-5 flex flex-col items-center justify-center text-center group hover:bg-surface-container-high transition-all duration-300"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  variants={fadeUp}
+                  custom={i + 3}
+                >
+                  <Icon size={18} className="text-primary mb-2 opacity-60" />
+                  <span className="text-2xl md:text-3xl font-heading font-bold text-primary tabular-nums">
+                    {stat.value}
+                  </span>
+                  <span className="text-xs text-on-surface-variant mt-1 font-body">
+                    {stat.label}
+                  </span>
+                </motion.div>
+              )
+            })}
+          </div>
+        </motion.div>
+
+        {/* Tech Stack */}
+        <motion.div
+          className="bg-surface-container-low rounded-lg p-6 md:p-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={fadeUp}
+          custom={5}
+        >
+          <h3 className="text-headline text-lg text-on-surface mb-6">Tech Stack</h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            {STACK.map((group, idx) => (
+              <div key={idx}>
+                <p className="text-label text-primary mb-3">{group.category}</p>
+                <div className="flex flex-wrap gap-2">
+                  {group.items.map((item) => (
+                    <span key={item} className="tech-chip">{item}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
-    </div>
+    </section>
   )
 }

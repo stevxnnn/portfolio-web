@@ -1,18 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ExternalLink, ArrowRight, Eye, X, Maximize2 } from 'lucide-react'
 
-export interface Project {
+interface Project {
   headline: string
   problem: string
   solution: string
   tech: string[]
   link: string
   linkLabel: string
-  duneEmbed: string | null
-  imageUrl?: string
-  embedUrl?: string
-  embedPaddingTop?: string
+  embedUrl: string
 }
 
 const ON_CHAIN_PROJECTS: Project[] = [
@@ -25,7 +24,7 @@ const ON_CHAIN_PROJECTS: Project[] = [
     tech: ['SQL', 'Dune Analytics', 'Data Visualization'],
     link: 'https://dune.com/zardy/bedrock',
     linkLabel: 'Dune Dashboard',
-    duneEmbed: '4495847/7513776',
+    embedUrl: 'https://dune.com/embeds/zardy/bedrock',
   },
   {
     headline: 'Binance Alpha BR Token Trading Campaign',
@@ -36,7 +35,7 @@ const ON_CHAIN_PROJECTS: Project[] = [
     tech: ['SQL', 'Dune Analytics', 'Data Visualization'],
     link: 'https://dune.com/test4444/br',
     linkLabel: 'Dune Dashboard',
-    duneEmbed: '5301268/8698675',
+    embedUrl: 'https://dune.com/embeds/test4444/br',
   },
   {
     headline: 'BR Token Team LP Overview',
@@ -47,8 +46,7 @@ const ON_CHAIN_PROJECTS: Project[] = [
     tech: ['SQL', 'Dune Analytics', 'Data Visualization'],
     link: 'https://dune.com/test4444/br-lp-overview',
     linkLabel: 'Dune Dashboard',
-    duneEmbed: null,
-    imageUrl: '/br-lp-overview.png',
+    embedUrl: 'https://dune.com/embeds/test4444/br-lp-overview',
   },
   {
     headline: 'uniBTC Retention on Ethereum',
@@ -59,7 +57,7 @@ const ON_CHAIN_PROJECTS: Project[] = [
     tech: ['SQL', 'Dune Analytics', 'Data Visualization'],
     link: 'https://dune.com/test4444/unibtc-retention-data-on-eth',
     linkLabel: 'Dune Dashboard',
-    duneEmbed: '5189468/8539698',
+    embedUrl: 'https://dune.com/embeds/test4444/unibtc-retention-data-on-eth',
   },
   {
     headline: 'uniBTC Flow Dashboard',
@@ -70,11 +68,11 @@ const ON_CHAIN_PROJECTS: Project[] = [
     tech: ['SQL', 'Dune Analytics', 'Data Visualization'],
     link: 'https://dune.com/test4444/unibtc-flow-on-eth',
     linkLabel: 'Dune Dashboard',
-    duneEmbed: '5331283/8737297',
+    embedUrl: 'https://dune.com/embeds/test4444/unibtc-flow-on-eth',
   },
 ]
 
-const FREETIME_PROJECTS: Project[] = [
+const OTHER_PROJECTS: Project[] = [
   {
     headline: 'Tennis Rotation Visualizer',
     problem:
@@ -84,18 +82,16 @@ const FREETIME_PROJECTS: Project[] = [
     tech: ['Python', 'Flet', 'asyncio', 'dataclasses', 'Render'],
     link: 'https://tennis-app-e3ng.onrender.com/',
     linkLabel: 'Live Demo',
-    duneEmbed: null,
     embedUrl: 'https://tennis-app-e3ng.onrender.com/',
-    embedPaddingTop: '140%',
   },
   {
-    headline: 'Valentine\'s Day Invitation Card',
+    headline: "Valentine's Day Invitation Card",
     problem: 'Wanted to create a fun, interactive digital invitation card for Valentine\'s Day.',
     solution: 'Built a personalized web-based dynamic invitation with interactive elements and animations.',
     tech: ['Next.js', 'React', 'Tailwind CSS'],
     link: 'https://vday14022026.vercel.app/',
     linkLabel: 'Live Demo',
-    duneEmbed: null,
+    embedUrl: 'https://vday14022026.vercel.app/',
   },
   {
     headline: 'Superteam Malaysia Website Bounty',
@@ -104,117 +100,261 @@ const FREETIME_PROJECTS: Project[] = [
     tech: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Supabase'],
     link: 'https://superteamweb.vercel.app/',
     linkLabel: 'Live Demo',
-    duneEmbed: null,
+    embedUrl: 'https://superteamweb.vercel.app/',
   },
 ]
 
-type Tab = 'onchain' | 'freetime'
+type Tab = 'onchain' | 'projects'
 
-interface ProjectsProps {
-  onOpenProject?: (project: Project) => void
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, delay: i * 0.08, ease: 'easeOut' as const },
+  }),
 }
 
-export default function Projects({ onOpenProject }: ProjectsProps = {}) {
+export default function Projects() {
   const [activeTab, setActiveTab] = useState<Tab>('onchain')
   const [expandedProject, setExpandedProject] = useState<number | null>(null)
+  const [previewProject, setPreviewProject] = useState<Project | null>(null)
 
-  const projects = activeTab === 'onchain' ? ON_CHAIN_PROJECTS : FREETIME_PROJECTS
+  const projects = activeTab === 'onchain' ? ON_CHAIN_PROJECTS : OTHER_PROJECTS
 
-  const toggleProject = (index: number) => {
-    setExpandedProject(expandedProject === index ? null : index)
-  }
+  const openPreview = useCallback((project: Project, e: React.MouseEvent) => {
+    e.stopPropagation()
+    setPreviewProject(project)
+    document.body.style.overflow = 'hidden'
+  }, [])
+
+  const closePreview = useCallback(() => {
+    setPreviewProject(null)
+    document.body.style.overflow = ''
+  }, [])
 
   return (
-    <div className="p-3 h-full flex flex-col font-sans w-full text-base lg:text-lg">
-      <div className="flex gap-2 mb-3">
-        <button
-          onClick={() => {
-            setActiveTab('onchain')
-            setExpandedProject(null)
-          }}
-          className={`win-button px-6 py-2 flex-1 font-bold text-base ${
-            activeTab === 'onchain' 
-              ? 'bg-[#d4d0c8] shadow-[inset_1px_1px_0_0_#808080,inset_-1px_-1px_0_0_#ffffff] !border-l-[black] !border-t-[black] !border-r-win-highlight !border-b-win-highlight' 
-              : ''
-          }`}
-        >
-          ON-CHAIN
-        </button>
-        <button
-          onClick={() => {
-            setActiveTab('freetime')
-            setExpandedProject(null)
-          }}
-          className={`win-button px-6 py-2 flex-1 font-bold text-base ${
-            activeTab === 'freetime' 
-              ? 'bg-[#d4d0c8] shadow-[inset_1px_1px_0_0_#808080,inset_-1px_-1px_0_0_#ffffff] !border-l-[black] !border-t-[black] !border-r-win-highlight !border-b-win-highlight' 
-              : ''
-          }`}
-        >
-          FREETIME
-        </button>
-      </div>
+    <>
+      <section id="projects" className="section-spacing">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.p
+            className="text-label text-primary mb-4"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={fadeUp}
+            custom={0}
+          >
+            Projects
+          </motion.p>
 
-      <div className="win-border-sunken bg-white flex-grow overflow-auto border-[#808080] select-text p-2">
-        <div className="min-w-full md:min-w-[700px] pb-4">
-          {/* Header Row */}
-          <div className="flex bg-win-gray win-border-sunken border-b-0 border-l-0 border-r-0 !border-t-[#ffffff] font-bold text-base">
-            <div className="w-full md:w-5/12 p-2 md:border-r md:border-win-shadow">Filename</div>
-            <div className="hidden md:block md:w-3/12 p-2 border-r border-win-shadow">Project Type</div>
-            <div className="hidden md:block md:w-4/12 p-2">Tech Stack</div>
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
+            <motion.h2
+              className="text-headline text-3xl md:text-4xl text-on-surface"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-100px' }}
+              variants={fadeUp}
+              custom={1}
+            >
+              Selected work
+            </motion.h2>
+
+            {/* Tabs */}
+            <motion.div
+              className="flex gap-1 bg-surface-container rounded-lg p-1"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={2}
+            >
+              <button
+                onClick={() => { setActiveTab('onchain'); setExpandedProject(null) }}
+                className={`px-5 py-2 rounded font-body text-sm font-medium transition-all duration-200 cursor-pointer ${
+                  activeTab === 'onchain'
+                    ? 'bg-surface-container-high text-primary'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                On-Chain
+              </button>
+              <button
+                onClick={() => { setActiveTab('projects'); setExpandedProject(null) }}
+                className={`px-5 py-2 rounded font-body text-sm font-medium transition-all duration-200 cursor-pointer ${
+                  activeTab === 'projects'
+                    ? 'bg-surface-container-high text-primary'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                Projects
+              </button>
+            </motion.div>
           </div>
-          
-          {/* List Items */}
-          <div className="bg-white">
+
+          {/* Project grid */}
+          <div className="grid md:grid-cols-2 gap-6">
             {projects.map((project, index) => {
               const isExpanded = expandedProject === index
               return (
-                <div key={index} className="border-b border-dotted border-gray-300">
-                  <div 
-                    className={`flex cursor-pointer hover:bg-win-blue hover:text-white ${isExpanded ? 'bg-win-blue text-white' : ''}`}
-                    onClick={() => toggleProject(index)}
-                  >
-                    <div className="w-full md:w-5/12 p-2 truncate flex items-center gap-3 select-none">
-                      <span className="text-[#c0c0c0] font-mono text-sm w-4 flex-shrink-0">[{isExpanded ? '-' : '+'}]</span>
-                      <span className="truncate">{project.headline}</span>
-                    </div>
-                    <div className="hidden md:flex md:w-3/12 p-2 truncate text-sm items-center">{project.tech.includes('Dune Analytics') ? 'Dune Dashboard.exe' : 'Web Application.exe'}</div>
-                    <div className="hidden md:flex md:w-4/12 p-2 truncate text-sm items-center">{project.tech.join(', ')}</div>
+                <motion.div
+                  key={`${activeTab}-${index}`}
+                  className="data-card group"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  variants={fadeUp}
+                  custom={index + 3}
+                  onClick={() => setExpandedProject(isExpanded ? null : index)}
+                >
+                  <div className="flex items-start justify-between gap-3 mb-4">
+                    <h3 className="text-headline text-lg text-on-surface group-hover:text-primary transition-colors duration-200">
+                      {project.headline}
+                    </h3>
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-on-surface-variant hover:text-primary transition-colors flex-shrink-0 mt-1"
+                      onClick={(e) => e.stopPropagation()}
+                      aria-label={`Open ${project.headline}`}
+                    >
+                      <ExternalLink size={16} />
+                    </a>
                   </div>
-                  
+
+                  <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-5 line-clamp-2">
+                    {project.problem}
+                  </p>
+
                   {isExpanded && (
-                    <div className="p-5 bg-[#ffffe1] text-win-black m-3 border border-black shadow-[2px_2px_0_rgba(0,0,0,0.5)] cursor-text select-text" onClick={(e) => e.stopPropagation()}>
-                      <h4 className="font-bold underline mb-3 tracking-wider text-lg">PROJECT_DETAILS.TXT</h4>
-                      <div className="mb-3">
-                        <strong className="text-win-blue text-base">Problem:</strong>
-                        <p className="mt-2 leading-relaxed text-sm md:text-base">{project.problem}</p>
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="mb-5 space-y-3"
+                    >
+                      <div>
+                        <p className="text-label text-primary mb-1">Solution</p>
+                        <p className="font-body text-sm text-on-surface-variant leading-relaxed">
+                          {project.solution}
+                        </p>
                       </div>
-                      <div className="mb-4">
-                        <strong className="text-win-teal text-base">Solution:</strong>
-                        <p className="mt-2 leading-relaxed text-sm md:text-base">{project.solution}</p>
-                      </div>
-                      <div className="mt-5 pt-3 border-t border-dashed border-[#808080] flex flex-col gap-2">
-                        {onOpenProject && (
-                          <button 
-                            onClick={(e) => { e.stopPropagation(); onOpenProject(project); }}
-                            className="text-win-blue font-bold tracking-wide flex items-center gap-2 hover:bg-[#d4d0c8] p-2 border border-transparent hover:border-win-shadow hover:shadow-[inset_1px_1px_0_0_#ffffff] w-fit active:shadow-[inset_1px_1px_0_0_#808080]"
-                          >
-                            <img src="/icons/computer_explorer-4.png" alt="IE" className="w-5 h-5" />
-                            Open Windows
-                          </button>
-                        )}
-                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-black items-center gap-2 hover:bg-win-blue hover:text-white p-2 border border-transparent w-fit font-bold text-base inline-flex">
-                          » Exec external {project.linkLabel}
-                        </a>
-                      </div>
-                    </div>
+                    </motion.div>
                   )}
-                </div>
+
+                  <div className="flex items-center justify-between mt-auto">
+                    <div className="flex flex-wrap gap-2">
+                      {project.tech.map((t) => (
+                        <span key={t} className="tech-chip">{t}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Action row */}
+                  <div className="flex items-center gap-5 mt-5">
+                    <button
+                      onClick={(e) => openPreview(project, e)}
+                      className="inline-flex items-center gap-2 font-body text-sm text-primary font-medium hover:gap-3 transition-all duration-200 cursor-pointer group/preview"
+                    >
+                      <Eye size={14} className="group-hover/preview:scale-110 transition-transform" />
+                      Preview
+                    </button>
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 font-body text-sm text-on-surface-variant font-medium hover:text-primary hover:gap-3 transition-all duration-200"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {project.linkLabel} <ArrowRight size={14} />
+                    </a>
+                  </div>
+                </motion.div>
               )
             })}
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+
+      {/* Preview modal — iframe loads lazily on demand */}
+      <AnimatePresence>
+        {previewProject && (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            {/* Backdrop */}
+            <div
+              className="absolute inset-0 bg-surface/90 backdrop-blur-md"
+              onClick={closePreview}
+            />
+
+            {/* Modal */}
+            <motion.div
+              className="relative w-full max-w-6xl h-[85vh] bg-surface-container rounded-xl border border-outline-variant/10 overflow-hidden flex flex-col shadow-2xl"
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              transition={{ duration: 0.25, ease: 'easeOut' as const }}
+            >
+              {/* Title bar */}
+              <div className="flex items-center justify-between px-5 py-3 border-b border-outline-variant/10 bg-surface-container-low flex-shrink-0">
+                <div className="flex items-center gap-3 min-w-0">
+                  <Eye size={14} className="text-primary flex-shrink-0" />
+                  <h3 className="font-heading text-sm font-semibold text-on-surface truncate">
+                    {previewProject.headline}
+                  </h3>
+                  <div className="hidden sm:flex gap-1.5 ml-2">
+                    {previewProject.tech.slice(0, 2).map((t) => (
+                      <span key={t} className="tech-chip !text-[10px] !px-2 !py-0.5">{t}</span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <a
+                    href={previewProject.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1.5 rounded text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-all duration-200 cursor-pointer"
+                    title="Open in new tab"
+                  >
+                    <Maximize2 size={14} />
+                  </a>
+                  <button
+                    onClick={closePreview}
+                    className="p-1.5 rounded text-on-surface-variant hover:text-red-400 hover:bg-surface-container-high transition-all duration-200 cursor-pointer"
+                    title="Close preview"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Iframe container — lazy loaded only when modal opens */}
+              <div className="flex-1 relative bg-surface-container-lowest">
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                    <span className="text-xs text-on-surface-variant font-body">Loading preview…</span>
+                  </div>
+                </div>
+                <iframe
+                  src={previewProject.embedUrl}
+                  title={`Preview of ${previewProject.headline}`}
+                  className="absolute inset-0 w-full h-full border-none"
+                  loading="lazy"
+                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                  allow="clipboard-read; clipboard-write"
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }

@@ -1,14 +1,28 @@
 'use client'
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Send, Github, Linkedin, Mail, BarChart3 } from 'lucide-react'
 import emailjs from '@emailjs/browser'
 
+const SOCIALS = [
+  { name: 'Email', icon: Mail, href: 'mailto:stevenliew929@gmail.com' },
+  { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com/in/liewsteven' },
+  { name: 'GitHub', icon: Github, href: 'https://github.com/stevxnnn' },
+  { name: 'Dune', icon: BarChart3, href: 'https://dune.com/zardy' },
+]
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, delay: i * 0.1, ease: 'easeOut' as const },
+  }),
+}
+
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  })
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{
     type: 'success' | 'error' | null
@@ -27,8 +41,7 @@ export default function Contact() {
     if (!serviceID || !templateID || !publicKey) {
       setSubmitStatus({
         type: 'error',
-        message:
-          'Email service is not configured. Please contact the network administrator.',
+        message: 'Email service is not configured.',
       })
       setIsSubmitting(false)
       return
@@ -48,109 +61,145 @@ export default function Contact() {
       )
 
       if (result.status === 200) {
-        setSubmitStatus({
-          type: 'success',
-          message: "Data pack transmitted successfully.",
-        })
+        setSubmitStatus({ type: 'success', message: 'Message sent successfully.' })
         setFormData({ name: '', email: '', message: '' })
       } else {
-        setSubmitStatus({
-          type: 'error',
-          message: 'Transmission error: packet loss.',
-        })
+        setSubmitStatus({ type: 'error', message: 'Failed to send message.' })
       }
     } catch (error: any) {
       console.error('EmailJS error:', error)
       setSubmitStatus({
         type: 'error',
-        message:
-          error.text || 'Failed to establish connection to SMTP server.',
+        message: error.text || 'Failed to send message.',
       })
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   return (
-    <div className="p-4 h-full flex flex-col font-sans w-full bg-win-gray text-base lg:text-lg min-h-[500px]">
-      <div className="win-border-sunken bg-white p-6 flex-grow border-[#808080] overflow-auto flex flex-col items-center sm:items-stretch">
-        <h2 className="font-display text-xl mb-6 text-win-blue drop-shadow-sm border-b-2 border-win-black pb-2">MAIL_CLIENT.EXE</h2>
-        <p className="mb-6">Have a data challenge? Send me a direct broadcast.</p>
+    <section id="contact" className="section-spacing bg-surface-container-low/50">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="grid md:grid-cols-2 gap-16">
+          {/* Left: Info */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={fadeUp}
+            custom={0}
+          >
+            <p className="text-label text-primary mb-4">Contact</p>
+            <h2 className="text-headline text-3xl md:text-4xl text-on-surface mb-6">
+              Let&apos;s connect
+            </h2>
+            <p className="font-body text-on-surface-variant text-base md:text-lg leading-relaxed mb-10">
+              Have a data challenge or need on-chain intelligence? I&apos;m always open to interesting
+              conversations and new collaborations.
+            </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-lg">
-          <div className="flex flex-col">
-            <label htmlFor="name" className="font-bold underline mb-2 w-fit">Sender Name:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="win-border-sunken p-2 w-full outline-none focus:bg-blue-50 text-base"
-            />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="email" className="font-bold underline mb-2 w-fit">Reply-To Address:</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="win-border-sunken p-2 w-full outline-none focus:bg-blue-50 text-base"
-              placeholder="user@domain.com"
-            />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="message" className="font-bold underline mb-2 w-fit">Message Body:</label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-              rows={5}
-              className="win-border-sunken p-3 w-full outline-none focus:bg-blue-50 resize-y text-base font-mono whitespace-pre-wrap"
-            />
-          </div>
+            {/* Social links */}
+            <div className="flex flex-wrap gap-3">
+              {SOCIALS.map((social) => {
+                const Icon = social.icon
+                return (
+                  <a
+                    key={social.name}
+                    href={social.href}
+                    target={social.href.startsWith('mailto') ? undefined : '_blank'}
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors duration-200 group cursor-pointer"
+                  >
+                    <Icon size={16} className="text-on-surface-variant group-hover:text-primary transition-colors duration-200" />
+                    <span className="font-body text-sm text-on-surface-variant group-hover:text-on-surface transition-colors duration-200">
+                      {social.name}
+                    </span>
+                  </a>
+                )
+              })}
+            </div>
+          </motion.div>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-win-shadow mt-6">
-             <button
-                type="submit"
-                disabled={isSubmitting}
-                className="win-button px-8 py-2 font-bold text-base disabled:opacity-50 active:translate-y-[1px]"
-              >
-                {isSubmitting ? 'Transmitting...' : 'Send Packet'}
-              </button>
-             {submitStatus.message && (
-                <span className={`font-bold ${submitStatus.type === 'success' ? 'text-[#10B981]' : 'text-[#EF4444]'}`}>
-                  {submitStatus.message}
-                </span>
-             )}
-          </div>
-        </form>
+          {/* Right: Form */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={fadeUp}
+            custom={2}
+          >
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label htmlFor="name" className="text-label text-on-surface-variant mb-2 block">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-surface-container-lowest rounded px-4 py-3 font-body text-on-surface text-base outline-none border border-transparent focus:border-primary/50 transition-colors duration-200 placeholder:text-on-surface-variant/40"
+                  placeholder="Your name"
+                />
+              </div>
+              <div>
+                <label htmlFor="email" className="text-label text-on-surface-variant mb-2 block">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-surface-container-lowest rounded px-4 py-3 font-body text-on-surface text-base outline-none border border-transparent focus:border-primary/50 transition-colors duration-200 placeholder:text-on-surface-variant/40"
+                  placeholder="you@domain.com"
+                />
+              </div>
+              <div>
+                <label htmlFor="message" className="text-label text-on-surface-variant mb-2 block">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  rows={5}
+                  className="w-full bg-surface-container-lowest rounded px-4 py-3 font-body text-on-surface text-base outline-none border border-transparent focus:border-primary/50 transition-colors duration-200 resize-y placeholder:text-on-surface-variant/40"
+                  placeholder="Tell me about your project..."
+                />
+              </div>
 
-        <div className="mt-10 pt-6 border-t border-win-shadow w-full">
-          <p className="font-bold mb-4">Other Communication Protocols:</p>
-          <div className="flex flex-wrap gap-4">
-            <a href="mailto:stevenliew929@gmail.com" className="text-blue-700 underline flex items-center gap-2 hover:bg-blue-100 p-2 border border-transparent hover:border-blue-300 text-base">Email</a>
-            <a href="https://linkedin.com/in/liewsteven" target="_blank" className="text-blue-700 underline flex items-center gap-2 hover:bg-blue-100 p-2 border border-transparent hover:border-blue-300 text-base">LinkedIn</a>
-            <a href="https://github.com/stevxnnn" target="_blank" className="text-blue-700 underline flex items-center gap-2 hover:bg-blue-100 p-2 border border-transparent hover:border-blue-300 text-base">GitHub</a>
-            <a href="https://dune.com/zardy" target="_blank" className="text-blue-700 underline flex items-center gap-2 hover:bg-blue-100 p-2 border border-transparent hover:border-blue-300 text-base">Dune Profile</a>
-          </div>
+              <div className="flex items-center gap-4">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Send size={16} />
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                </button>
+                {submitStatus.message && (
+                  <span className={`font-body text-sm font-medium ${
+                    submitStatus.type === 'success' ? 'text-primary' : 'text-red-400'
+                  }`}>
+                    {submitStatus.message}
+                  </span>
+                )}
+              </div>
+            </form>
+          </motion.div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }

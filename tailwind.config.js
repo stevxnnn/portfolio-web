@@ -8,18 +8,38 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['W95FA', '"MS Sans Serif"', '"Microsoft Sans Serif"', 'Tahoma', 'Arial', 'sans-serif'],
-        display: ['var(--font-press-start)', 'monospace'],
+        heading: ['Epilogue', 'sans-serif'],
+        body: ['Space Grotesk', 'sans-serif'],
       },
       colors: {
-        win: {
-          teal: '#008080',
-          gray: '#c0c0c0',
-          blue: '#000080',
-          highlight: '#ffffff',
-          shadow: '#808080',
-          black: '#000000',
-        }
+        surface: {
+          DEFAULT: '#0b1326',
+          dim: '#0b1326',
+          bright: '#31394d',
+          container: '#171f33',
+          'container-low': '#131b2e',
+          'container-high': '#222a3d',
+          'container-highest': '#2d3449',
+          'container-lowest': '#060e20',
+        },
+        primary: {
+          DEFAULT: '#4be277',
+          container: '#22c55e',
+          dim: '#4ae176',
+        },
+        secondary: {
+          DEFAULT: '#b9c7e0',
+          container: '#3c4a5e',
+        },
+        tertiary: {
+          DEFAULT: '#50dfa4',
+          container: '#28c38a',
+        },
+        'on-surface': '#dae2fd',
+        'on-surface-variant': '#bccbb9',
+        'on-primary': '#003915',
+        outline: '#869585',
+        'outline-variant': '#3d4a3d',
       },
     },
   },

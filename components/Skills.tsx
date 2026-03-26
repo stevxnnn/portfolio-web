@@ -1,120 +1,157 @@
 'use client'
 
-import { useState } from 'react'
+import { motion } from 'framer-motion'
+import {
+  Database, Globe, Search, Server, Cpu,
+  Code, Braces, FileCode, Terminal,
+  BarChart3, Layout, PieChart, LineChart, Activity,
+} from 'lucide-react'
 
-interface Tool {
+interface Skill {
   name: string
-  status: string
+  icon: React.ElementType
 }
 
-interface TechBox {
+interface SkillGroup {
   category: string
-  sysName: string
-  tools: Tool[]
+  label: string
+  skills: Skill[]
 }
 
-const STACKS: TechBox[] = [
+const SKILL_GROUPS: SkillGroup[] = [
   {
     category: 'Data Sources & APIs',
-    sysName: 'EXTRACTOR.SYS',
-    tools: [
-      { name: 'The Graph', status: 'OK' },
-      { name: 'Dune Analytics', status: 'OK' },
-      { name: 'SQL', status: 'OK' },
-      { name: 'Flipside', status: 'OK' },
-      { name: 'Blockscout API', status: 'OK' },
+    label: 'EXTRACTION',
+    skills: [
+      { name: 'The Graph', icon: Globe },
+      { name: 'Dune Analytics', icon: Search },
+      { name: 'SQL', icon: Database },
+      { name: 'Flipside', icon: Server },
+      { name: 'Blockscout API', icon: Cpu },
     ],
   },
   {
     category: 'Data Processing & Analysis',
-    sysName: 'PROCESSOR.DLL',
-    tools: [
-      { name: 'Python', status: 'OK' },
-      { name: 'Pandas / Polars', status: 'OK' },
-      { name: 'Node.js', status: 'OK' },
-      { name: 'TypeScript', status: 'OK' },
-      { name: 'SQL Engines', status: 'OK' },
+    label: 'PROCESSING',
+    skills: [
+      { name: 'Python', icon: Code },
+      { name: 'Pandas / Polars', icon: Braces },
+      { name: 'Node.js', icon: Terminal },
+      { name: 'TypeScript', icon: FileCode },
+      { name: 'SQL Engines', icon: Database },
     ],
   },
   {
     category: 'Dashboards & Visualization',
-    sysName: 'VISUALIZER.OCX',
-    tools: [
-      { name: 'React', status: 'OK' },
-      { name: 'Looker Studio', status: 'OK' },
-      { name: 'Tableau', status: 'OK' },
-      { name: 'Dune Dashboards', status: 'OK' },
-      { name: 'Real-time Charts', status: 'OK' },
+    label: 'VISUALIZATION',
+    skills: [
+      { name: 'React', icon: Layout },
+      { name: 'Looker Studio', icon: PieChart },
+      { name: 'Tableau', icon: BarChart3 },
+      { name: 'Dune Dashboards', icon: LineChart },
+      { name: 'Real-time Charts', icon: Activity },
     ],
   },
 ]
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, delay: i * 0.08, ease: 'easeOut' as const },
+  }),
+}
+
 export default function Skills() {
-  const [expanded, setExpanded] = useState<number | null>(0)
-
-  const toggle = (index: number) => {
-    setExpanded(expanded === index ? null : index)
-  }
-
   return (
-    <div className="p-4 h-full flex flex-col font-sans w-full bg-win-gray text-base lg:text-lg min-h-[500px]">
-      <div className="flex gap-2 items-center mb-3 px-2">
-        <img src="/icons/computer_explorer-4.png" className="w-6 h-6" alt="Computer" />
-        <span className="font-bold text-lg">Device Manager</span>
-      </div>
+    <section id="skills" className="section-spacing bg-surface-container-low/50">
+      <div className="max-w-6xl mx-auto px-6">
+        <motion.p
+          className="text-label text-primary mb-4"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={fadeUp}
+          custom={0}
+        >
+          Skills
+        </motion.p>
 
-      <div className="win-border-sunken bg-white flex-grow border-[#808080] overflow-auto p-4 select-none">
-        <ul className="pl-2 relative">
-          {/* Main Root */}
-          <li className="flex items-center gap-2 mb-2">
-            <span className="w-4 text-center font-mono leading-none text-lg">-</span>
-            <img src="/icons/computer_explorer-4.png" className="w-6 h-6" alt="PC" />
-            <span className="font-bold">STEVEN-PC</span>
-          </li>
-          
-          {/* Children nodes */}
-          <ul className="pl-6 border-l border-dotted border-[#808080] ml-2 pb-3 relative">
-             {STACKS.map((stack, idx) => {
-                const isOpen = expanded === idx
-                return (
-                  <li key={idx} className="relative mt-3">
-                    <div className="absolute w-4 border-b border-dotted border-[#808080] top-3 -left-4"></div>
-                    <div className="flex flex-col">
-                      <div 
-                        className={`flex items-center gap-2 cursor-pointer w-fit pr-3 py-1 ${isOpen ? 'bg-win-blue text-white' : 'hover:bg-win-blue hover:text-white'}`}
-                        onClick={() => toggle(idx)}
-                      >
-                        <span className="w-4 h-4 text-center bg-white border border-[#808080] leading-[14px] text-xs flex items-center justify-center font-mono text-black mr-1">
-                          {isOpen ? '-' : '+'}
-                        </span>
-                        <img src="/icons/directory_closed-4.png" className="w-6 h-6" alt="Dir" />
-                        <span className="leading-none">{stack.category} ({stack.sysName})</span>
+        <motion.h2
+          className="text-headline text-3xl md:text-4xl text-on-surface mb-4"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={fadeUp}
+          custom={1}
+        >
+          Full-stack data pipeline
+        </motion.h2>
+
+        <motion.p
+          className="font-body text-on-surface-variant text-base md:text-lg mb-12 max-w-2xl"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={fadeUp}
+          custom={2}
+        >
+          From raw on-chain events to production dashboards — every layer of the analytics stack.
+        </motion.p>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {SKILL_GROUPS.map((group, gIdx) => (
+            <motion.div
+              key={gIdx}
+              className="bg-surface-container rounded-lg p-6 hover:bg-surface-container-high transition-colors duration-300"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={gIdx + 3}
+            >
+              <p className="text-label text-primary mb-2">{group.label}</p>
+              <h3 className="text-headline text-lg text-on-surface mb-6">{group.category}</h3>
+
+              <div className="space-y-4">
+                {group.skills.map((skill, sIdx) => {
+                  const Icon = skill.icon
+                  return (
+                    <div
+                      key={sIdx}
+                      className="flex items-center gap-3 group cursor-default"
+                    >
+                      <div className="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-200">
+                        <Icon size={16} className="text-on-surface-variant group-hover:text-primary transition-colors duration-200" />
                       </div>
-                      
-                      {isOpen && (
-                        <ul className="pl-8 border-l border-dotted border-[#808080] ml-2 mt-2 pb-2 relative">
-                          {stack.tools.map((tool, tIdx) => (
-                            <li key={tIdx} className="relative flex items-center gap-2 mt-3">
-                              {/* Horizontal line to item */}
-                              <div className="absolute w-5 border-b border-dotted border-[#808080] top-3 -left-[18px]"></div>
-                              <img src="/icons/gear-0.png" className="w-5 h-5" alt="Gear" />
-                              <span className="leading-none">{tool.name}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                      <span className="font-body text-on-surface text-sm">{skill.name}</span>
                     </div>
-                  </li>
-                )
-             })}
-          </ul>
-        </ul>
+                  )
+                })}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Status bar */}
+        <motion.div
+          className="mt-8 bg-surface-container rounded-lg px-6 py-4 flex justify-between items-center"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeUp}
+          custom={7}
+        >
+          <span className="font-body text-sm text-on-surface-variant">
+            3 pipeline stages — 15 tools loaded
+          </span>
+          <span className="font-body text-sm text-primary font-medium flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            System running optimally
+          </span>
+        </motion.div>
       </div>
-      
-      <div className="mt-4 win-border-sunken bg-win-gray p-3 text-sm lg:text-base flex justify-between items-center text-win-black font-bold">
-        <span>3 device class(es) found.</span>
-        <span className="text-[#10B981]">System running optimally.</span>
-      </div>
-    </div>
+    </section>
   )
 }

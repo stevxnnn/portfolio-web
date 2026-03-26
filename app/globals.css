@@ -2,59 +2,160 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.cdnfonts.com/css/w95fa');
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 @layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
   body {
-    background-color: #008080;
-    color: #000000;
-    /* Force true pixelated rendering without blur for the retro look */
-    -webkit-font-smoothing: none;
+    background-color: #0b1326;
+    color: #dae2fd;
+    font-family: 'Space Grotesk', sans-serif;
+    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-smooth: never;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Epilogue', sans-serif;
+  }
+
+  ::selection {
+    background-color: rgba(75, 226, 119, 0.3);
+    color: #dae2fd;
   }
 }
 
 @layer components {
-  /* Classic Win98 Button/Border outsets */
-  .win-border {
-    @apply border-2 border-l-win-highlight border-t-win-highlight border-r-[black] border-b-[black] bg-win-gray shadow-[inset_-1px_-1px_0_0_#808080,inset_1px_1px_0_0_#ffffff];
+  /* Glassmorphism nav */
+  .glass-nav {
+    background: rgba(23, 31, 51, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(61, 74, 61, 0.15);
   }
-  
-  .win-border-sunken {
-    @apply border-2 border-l-win-shadow border-t-win-shadow border-r-win-highlight border-b-win-highlight bg-white;
+
+  .glass-nav-solid {
+    background: rgba(11, 19, 38, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(61, 74, 61, 0.15);
   }
-  
-  .win-button {
-    @apply border-2 border-l-win-highlight border-t-win-highlight border-r-[black] border-b-[black] bg-win-gray shadow-[inset_-1px_-1px_0_0_#808080,inset_1px_1px_0_0_#ffffff] active:border-l-[black] active:border-t-[black] active:border-r-win-highlight active:border-b-win-highlight active:shadow-[inset_1px_1px_0_0_#808080,inset_-1px_-1px_0_0_#ffffff];
+
+  /* Primary gradient CTA button */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3 rounded font-body font-semibold text-on-primary transition-all duration-200 cursor-pointer;
+    background: linear-gradient(135deg, #4be277, #22c55e);
+    box-shadow: 0 0 20px rgba(75, 226, 119, 0.15);
   }
-  
-  /* Taskbar item */
-  .win-taskbar-item {
-    @apply flex items-center gap-1 font-bold px-2 py-1 text-sm border-2 border-l-win-highlight border-t-win-highlight border-r-[black] border-b-[black] bg-win-gray shadow-[inset_-1px_-1px_0_0_#808080,inset_1px_1px_0_0_#ffffff] w-32 truncate;
+  .btn-primary:hover {
+    box-shadow: 0 0 30px rgba(75, 226, 119, 0.3);
+    transform: translateY(-1px);
   }
-  .win-taskbar-item.active {
-    @apply border-l-[black] border-t-[black] border-r-win-highlight border-b-win-highlight shadow-[calc(1px)_calc(1px)_0_0_#808080_inset,calc(-1px)_calc(-1px)_0_0_#ffffff_inset] bg-gray-300;
-         /* Use bg-gray-300 or a patterned dither */
-    background-image: url('data:image/svg+xml;utf8,<svg width="2" height="2" viewBox="0 0 2 2" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1" fill="%23ffffff"/><rect x="1" y="1" width="1" height="1" fill="%23ffffff"/></svg>');
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  /* Ghost button */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded font-body font-semibold text-primary transition-all duration-200 cursor-pointer;
+    border: 1px solid rgba(61, 74, 61, 0.3);
+  }
+  .btn-ghost:hover {
+    background: rgba(75, 226, 119, 0.08);
+    border-color: rgba(75, 226, 119, 0.4);
+  }
+
+  /* Data card with hover accent */
+  .data-card {
+    @apply bg-surface-container-low rounded p-6 transition-all duration-300 cursor-pointer relative;
+  }
+  .data-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #4be277;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 2px;
+  }
+  .data-card:hover {
+    background-color: #222a3d;
+  }
+  .data-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Tech chip */
+  .tech-chip {
+    @apply inline-block px-3 py-1 rounded text-xs font-body font-medium tracking-wider uppercase;
+    background: #2d3449;
+    color: #bccbb9;
+  }
+
+  /* Section spacing */
+  .section-spacing {
+    @apply py-24 md:py-32;
+  }
+
+  /* Geometric grid overlay */
+  .grid-overlay {
+    background-image:
+      linear-gradient(rgba(61, 74, 61, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(61, 74, 61, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
   }
 }
 
-/* CRT Scanlines Overlay */
-.crt-overlay {
-  background: linear-gradient(
-    to bottom,
-    rgba(18, 16, 16, 0) 50%,
-    rgba(0, 0, 0, 0.03) 50%
-  );
-  background-size: 100% 4px;
+@layer utilities {
+  .text-display {
+    font-family: 'Epilogue', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .text-headline {
+    font-family: 'Epilogue', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .text-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .ambient-shadow {
+    box-shadow: 0 0 40px rgba(218, 226, 253, 0.06);
+  }
+
+  .glow-green {
+    box-shadow: 0 0 30px rgba(75, 226, 119, 0.15);
+  }
 }
 
-/* Framer Motion overrides for maximized windows */
-.window-maximized {
-  transform: none !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: calc(100vh - 40px) !important;
+/* Grid anchor decoration */
+.grid-anchor {
+  position: relative;
+}
+.grid-anchor::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #4be277;
 }
