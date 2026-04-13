@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Database, Code, BarChart3, Zap } from 'lucide-react'
+import { Database, Code, BarChart3, Zap, GraduationCap } from 'lucide-react'
 
 const STATS = [
   { label: 'Data Points Analyzed', value: '1TB+', icon: Database },
@@ -22,6 +22,16 @@ const STACK = [
   {
     category: 'Visualization',
     items: ['React', 'Tableau', 'Dune Dashboards', 'Looker Studio'],
+  },
+]
+
+const EDUCATION = [
+  {
+    degree: 'B.Sc. (Hons) in Computer Science (Specialism in Data Analytics)',
+    institution: 'Asia Pacific University (APU), Petaling Jaya, Malaysia',
+    period: '2018 – 2021',
+    grade: 'Second Class Honours, First Division',
+    note: 'Data Mining · Statistical Analysis · Database Management · Machine Learning | SAS Joint Certificate in Computer Science and Data Analytics',
   },
 ]
 
@@ -76,30 +86,39 @@ export default function About() {
               <span className="text-primary font-semibold">real alpha</span> lives.
             </p>
             <p className="font-body text-on-surface-variant leading-relaxed text-base md:text-lg">
-              I specialize in transforming raw blockchain data into tactical intelligence. Whether it&apos;s tracking 
+              I specialize in transforming raw blockchain data into tactical intelligence. Whether it&apos;s tracking
               smart money flows or identifying protocol anomalies, my work is built for operators who need{' '}
-              <span className="text-red-400 font-semibold">high-signal insights</span> in real-time.
+              <span className="text-red-400 font-semibold">high-signal insights</span>{' '}
+              in real-time.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             {STATS.map((stat, i) => {
               const Icon = stat.icon
               return (
                 <motion.div
                   key={i}
-                  className="bg-surface-container-low rounded-lg p-5 flex flex-col items-center justify-center text-center group hover:bg-surface-container-high transition-all duration-300"
+                  className="relative rounded-xl p-5 sm:p-6 flex flex-col items-center justify-center text-center group transition-all duration-300 overflow-hidden"
+                  style={{
+                    background: '#0e1628',
+                    border: '1px solid rgba(0,212,255,0.1)',
+                    borderTop: '2px solid rgba(0,212,255,0.25)',
+                  }}
+                  whileHover={{ borderTopColor: 'rgba(0,212,255,0.7)', translateY: -2 }}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true }}
                   variants={fadeUp}
                   custom={i + 3}
                 >
-                  <Icon size={18} className="text-primary mb-2 opacity-60" />
-                  <span className="text-2xl md:text-3xl font-heading font-bold text-primary tabular-nums">
+                  {/* Subtle glow on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+                  <Icon size={14} className="text-primary/50 mb-3 relative z-10" />
+                  <span className="stat-num text-3xl sm:text-4xl tabular-nums relative z-10">
                     {stat.value}
                   </span>
-                  <span className="text-xs text-on-surface-variant mt-1 font-body">
+                  <span className="font-mono text-[10px] tracking-widest uppercase text-on-surface-variant mt-2 leading-tight relative z-10">
                     {stat.label}
                   </span>
                 </motion.div>
@@ -110,7 +129,8 @@ export default function About() {
 
         {/* Tech Stack */}
         <motion.div
-          className="bg-surface-container-low rounded-lg p-6 md:p-8"
+          className="rounded-xl p-6 md:p-8 mb-6"
+          style={{ background: '#0e1628', border: '1px solid rgba(0,212,255,0.1)', borderTop: '2px solid rgba(0,212,255,0.18)' }}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
@@ -130,6 +150,37 @@ export default function About() {
               </div>
             ))}
           </div>
+        </motion.div>
+
+        {/* Education */}
+        <motion.div
+          className="rounded-xl p-6 md:p-8"
+          style={{ background: '#0e1628', border: '1px solid rgba(0,212,255,0.1)', borderTop: '2px solid rgba(0,212,255,0.18)' }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={fadeUp}
+          custom={6}
+        >
+          <div className="flex items-center gap-2 mb-5">
+            <GraduationCap size={16} className="text-primary opacity-70" />
+            <h3 className="text-headline text-lg text-on-surface">Education</h3>
+          </div>
+          {EDUCATION.map((edu, i) => (
+            <div key={i} className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
+              <div>
+                <p className="font-body font-semibold text-on-surface text-sm">{edu.degree}</p>
+                <p className="font-body text-sm text-primary">{edu.institution}</p>
+                {'grade' in edu && edu.grade && (
+                  <p className="font-body text-xs font-medium text-on-surface mt-0.5">{edu.grade}</p>
+                )}
+                {edu.note && <p className="font-body text-xs text-on-surface-variant mt-0.5">{edu.note}</p>}
+              </div>
+              <span className="font-body text-xs text-on-surface-variant tabular-nums bg-surface-container px-3 py-1.5 rounded whitespace-nowrap">
+                {edu.period}
+              </span>
+            </div>
+          ))}
         </motion.div>
       </div>
     </section>

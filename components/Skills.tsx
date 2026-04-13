@@ -10,6 +10,7 @@ import {
 interface Skill {
   name: string
   icon: React.ElementType
+  context: string
 }
 
 interface SkillGroup {
@@ -23,33 +24,33 @@ const SKILL_GROUPS: SkillGroup[] = [
     category: 'Data Sources & APIs',
     label: 'EXTRACTION',
     skills: [
-      { name: 'The Graph', icon: Globe },
-      { name: 'Dune Analytics', icon: Search },
-      { name: 'SQL', icon: Database },
-      { name: 'Flipside', icon: Server },
-      { name: 'Blockscout API', icon: Cpu },
+      { name: 'Dune Analytics', icon: Search, context: 'Primary tool' },
+      { name: 'SQL', icon: Database, context: '3+ yrs' },
+      { name: 'The Graph', icon: Globe, context: 'Subgraphs' },
+      { name: 'Flipside', icon: Server, context: 'Cross-chain' },
+      { name: 'Blockscout API', icon: Cpu, context: 'EVM chains' },
     ],
   },
   {
     category: 'Data Processing & Analysis',
     label: 'PROCESSING',
     skills: [
-      { name: 'Python', icon: Code },
-      { name: 'Pandas / Polars', icon: Braces },
-      { name: 'Node.js', icon: Terminal },
-      { name: 'TypeScript', icon: FileCode },
-      { name: 'SQL Engines', icon: Database },
+      { name: 'Python', icon: Code, context: '3+ yrs' },
+      { name: 'Pandas / Polars', icon: Braces, context: 'Data wrangling' },
+      { name: 'TypeScript', icon: FileCode, context: '2+ yrs' },
+      { name: 'Node.js', icon: Terminal, context: 'Backend scripts' },
+      { name: 'SQL Engines', icon: Database, context: 'Advanced queries' },
     ],
   },
   {
     category: 'Dashboards & Visualization',
     label: 'VISUALIZATION',
     skills: [
-      { name: 'React', icon: Layout },
-      { name: 'Looker Studio', icon: PieChart },
-      { name: 'Tableau', icon: BarChart3 },
-      { name: 'Dune Dashboards', icon: LineChart },
-      { name: 'Real-time Charts', icon: Activity },
+      { name: 'Dune Dashboards', icon: LineChart, context: 'Primary output' },
+      { name: 'React', icon: Layout, context: '2+ yrs' },
+      { name: 'Looker Studio', icon: PieChart, context: 'BI reporting' },
+      { name: 'Tableau', icon: BarChart3, context: 'Enterprise BI' },
+      { name: 'Real-time Charts', icon: Activity, context: 'Live data' },
     ],
   },
 ]
@@ -65,7 +66,7 @@ const fadeUp = {
 
 export default function Skills() {
   return (
-    <section id="skills" className="section-spacing bg-surface-container-low/50">
+    <section id="skills" className="section-spacing" style={{ background: 'rgba(8,14,28,0.5)' }}>
       <div className="max-w-6xl mx-auto px-6">
         <motion.p
           className="text-label text-primary mb-4"
@@ -104,7 +105,8 @@ export default function Skills() {
           {SKILL_GROUPS.map((group, gIdx) => (
             <motion.div
               key={gIdx}
-              className="bg-surface-container rounded-lg p-6 hover:bg-surface-container-high transition-colors duration-300"
+              className="rounded-xl p-6 transition-all duration-300 cursor-default"
+              style={{ background: '#0e1628', border: '1px solid rgba(0,212,255,0.1)', borderTop: '2px solid rgba(0,212,255,0.2)' }}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -120,12 +122,17 @@ export default function Skills() {
                   return (
                     <div
                       key={sIdx}
-                      className="flex items-center gap-3 group cursor-default"
+                      className="flex items-center justify-between gap-3 group cursor-default"
                     >
-                      <div className="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-200">
-                        <Icon size={16} className="text-on-surface-variant group-hover:text-primary transition-colors duration-200" />
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-200" style={{ background: 'rgba(0,212,255,0.06)' }}>
+                          <Icon size={16} className="text-on-surface-variant group-hover:text-primary transition-colors duration-200" />
+                        </div>
+                        <span className="font-body text-on-surface text-sm">{skill.name}</span>
                       </div>
-                      <span className="font-body text-on-surface text-sm">{skill.name}</span>
+                      <span className="font-mono text-[10px] text-primary/50 whitespace-nowrap shrink-0 uppercase tracking-wider">
+                        {skill.context}
+                      </span>
                     </div>
                   )
                 })}
@@ -136,7 +143,8 @@ export default function Skills() {
 
         {/* Status bar */}
         <motion.div
-          className="mt-8 bg-surface-container rounded-lg px-6 py-4 flex justify-between items-center"
+          className="mt-8 rounded-xl px-6 py-4 flex justify-between items-center"
+          style={{ background: '#0e1628', border: '1px solid rgba(0,212,255,0.1)' }}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}

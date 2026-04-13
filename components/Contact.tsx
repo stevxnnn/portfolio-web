@@ -82,7 +82,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="section-spacing bg-surface-container-low/50">
+    <section id="contact" className="section-spacing bg-surface-container-low/50-low/50">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-16">
           {/* Left: Info */}
@@ -144,7 +144,7 @@ export default function Contact() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full bg-surface-container-lowest rounded px-4 py-3 font-body text-on-surface text-base outline-none border border-transparent focus:border-primary/50 transition-colors duration-200 placeholder:text-on-surface-variant/40"
+                  className="w-full bg-surface-container-lowest border rounded px-4 py-3 font-body text-on-surface text-base outline-none focus:border-primary/50 transition-colors duration-200 placeholder:text-on-surface-variant/40"
                   placeholder="Your name"
                 />
               </div>
@@ -159,7 +159,7 @@ export default function Contact() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full bg-surface-container-lowest rounded px-4 py-3 font-body text-on-surface text-base outline-none border border-transparent focus:border-primary/50 transition-colors duration-200 placeholder:text-on-surface-variant/40"
+                  className="w-full bg-surface-container-lowest border rounded px-4 py-3 font-body text-on-surface text-base outline-none focus:border-primary/50 transition-colors duration-200 placeholder:text-on-surface-variant/40"
                   placeholder="you@domain.com"
                 />
               </div>
@@ -174,7 +174,7 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   rows={5}
-                  className="w-full bg-surface-container-lowest rounded px-4 py-3 font-body text-on-surface text-base outline-none border border-transparent focus:border-primary/50 transition-colors duration-200 resize-y placeholder:text-on-surface-variant/40"
+                  className="w-full bg-surface-container-lowest border rounded px-4 py-3 font-body text-on-surface text-base outline-none focus:border-primary/50 transition-colors duration-200 resize-y placeholder:text-on-surface-variant/40"
                   placeholder="Tell me about your project..."
                 />
               </div>
